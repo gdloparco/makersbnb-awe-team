@@ -1,4 +1,6 @@
--- First, we must delete (drop) all our tables
+-- DEV DATABASE NAME: DEFAULT_MAKERSBNB_PROJECT
+-- TEST DATABASE NAME: DEFAULT_MAKERSBNB_PROJECT_TEST
+
 DROP TABLE IF EXISTS users CASCADE;
 DROP SEQUENCE IF EXISTS users_id_seq;
 DROP TABLE IF EXISTS properties;
@@ -6,7 +8,6 @@ DROP SEQUENCE IF EXISTS properties_id_seq;
 DROP TABLE IF EXISTS bookings;
 DROP SEQUENCE IF EXISTS bookings_id_seq;
 
--- Then, we recreate them
 CREATE SEQUENCE IF NOT EXISTS users_id_seq;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -44,7 +45,6 @@ CREATE TABLE bookings (
         ON DELETE CASCADE
 );
 
--- Finally, we add any records that are needed for the tests to run
 INSERT INTO users (username, email, password, phone) VALUES ('Venera', 'venera@gmail.com', 'venera123', 07463648536);
 INSERT INTO users (username, email, password, phone) VALUES ('Andre', 'andre@gmail.com', 'andre123', 07463228136);
 INSERT INTO users (username, email, password, phone) VALUES ('Booker', 'booker@gmail.com', 'booker123', 01163228136);
