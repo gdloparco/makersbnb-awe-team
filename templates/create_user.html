@@ -1,40 +1,31 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>MakersBnB</title>
+{% extends 'base.html' %}
 
-        <!--
-            Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
-            If you're wondering how the CSS file below is being loaded.
-        -->
-        <link rel="stylesheet" href="/static/style.css" >
-    </head>
-    <header>
-        <h1>MakersBnB</h1>
-        <a href="/create_user">Register as a User</a>
-    </header>
-    <body>
-        <h3>Register</h3>
+{% block title %}MakersBNB{% endblock %}
 
-        <form action="/create_user" method="POST">
-            
-            {% if errors %}
-                <p class="errors">
-                    There were errors with your submission: {{errors}}
-                </p>
-            {% endif %}
+{% block styles %}
+{% endblock %}
 
-            <input type="text" name="username">
-            <br>
-            <input type="text" name="email">
-            <br>
-            <input type="text" name="password">
-            <br>
-            <input type="text" name="phone">
-            <br>
-            <input type="submit" value="Register">
-        </form>
+{% block content %}
+    <h3>Register</h3>
+
+    <form action="/create_user" method="POST">
         
-    </body>
-    <footer></footer>
-</html>
+        {% if errors %}
+            <p class="errors">
+                There were errors with your submission: {{errors}}
+            </p>
+        {% endif %}
+
+        <input type="text" name="username">
+        <br>
+        <input type="text" name="email">
+        <br>
+        <input type="text" name="password">
+        <br>
+        <input type="text" name="phone">
+        <br>
+        <input type="submit" value="Register">
+    </form>
+    <br>
+    <footer>@TeamVenera</footer>
+{% endblock %}
