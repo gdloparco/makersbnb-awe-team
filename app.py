@@ -22,6 +22,10 @@ def get_index():
 def get_property_list():
     return render_template('property_list.html')
 
+@app.route('/create_user')
+def get_create_user():
+    return render_template('create_user.html')
+
 @app.route('/create_user', methods=['POST'])
 def post_create_user():
     connection = get_flask_database_connection(app)
