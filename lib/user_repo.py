@@ -22,16 +22,35 @@ class userRepository:
         row = rows[0]
         return User(row["id"], row["username"], row["email"], row["password"], row["phone"])
     
+
+
     # Create a new user
-    def create(self, user):
-        rows = self._connection.execute("INSERT INTO users (username, email, password, phone) VALUES (%s,%s,%s,%s)",[user.username, user.email, user.password, user.phone])
+    def create(self, new_user):
+        rows = self._connection.execute('SELECT * from users')
+        users = []
+        for row in rows:
+            item = User(row["id"], row["username"], row["email"], row["password"], row["phone"])
+            users.append(item)
+        
+        for user in users:
+            if new_user.username == user.username:
+                raise Exception("User already exists. Choose a new username.")
+        
+        if not self.password_manager(new_user.password):
+            raise Exception("Password is not valid: password must be minimum 8 characters long and contain one of the following: '!@$%&'")
+
+        self._connection.execute("INSERT INTO users (username, email, password, phone) VALUES (%s,%s,%s,%s)",[new_user.username, new_user.email, new_user.password, new_user.phone])
         return None
     
+
     # Delete an existing user
     def delete(self, username):
         rows = self._connection.execute("DELETE FROM users WHERE username=%s",[username])
         return None
     
+    def password_manager(self, password):
+        return len(password) >= 8 and any(char in password for char in '!@$%&')
+
 
 """
    
