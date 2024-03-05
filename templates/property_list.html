@@ -14,12 +14,20 @@
         <a href="/create_user">Register as a User</a>
     </header>
     <body>
-        <h3>Welcome to MakersBnB, the fastest growing property hire app in the world!</h3>
-        <br>
-        <a href="/property_list">Rent one of our properties</a>
-        <br>
-        <a href="/create_property">List your property</a>
-        
+        <h3>See our fabulous properties below!</h3>
+        <ul>
+            {% for property in properties %}
+            <li>
+                {{property.name}}
+            </li>
+            <li>
+                {{property.description}}
+            </li>
+            <li>
+                {{property.cost_per_night}}
+            </li>
+            {% endfor %}
+        </ul>
     </body>
     <footer></footer>
 </html>
