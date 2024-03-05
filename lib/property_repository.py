@@ -6,7 +6,7 @@ class PropertyRepository():
         self._connection = connection
 
     def all(self):
-        rows = self._connection.execute('SELECT * from properties')
+        rows = self._connection.execute('SELECT * from properties ORDER BY id') #order by helps to sort changes made by update that was changing the order of the properties once updates were made.
         properties = [Property(row['id'],row['name'], row['description'], row['cost_per_night'], row['user_id']) for row in rows]
         return properties
     
@@ -14,28 +14,25 @@ class PropertyRepository():
         self._connection.execute('INSERT INTO properties (name, description, cost_per_night, user_id) VALUES (%s, %s, %s, %s) RETURNING id', [property.name, property.description, property.cost_per_night, property.user_id])
         return None
     
-    def update(self, property):
-        # Check if the property has a valid ID
-        if not property.id:
-            raise ValueError("Property must have a valid name for updating.")
-        
-        query = """
+
+    def update_property(self, property_id, name=None, description=None, cost_per_night=None):
+        # Construct the SET clause based on provided values to be updated
+        set_clause = []
+        if name is not None:
+            set_clause.append(f"name = '{name}'")
+        if description is not None:
+            set_clause.append(f"description = '{description}'")
+        if cost_per_night is not None:
+            set_clause.append(f"cost_per_night = {cost_per_night}")
+
+        # Check if any fields were provided for update
+        if not set_clause:
+            raise ValueError("At least one field (name, description, or cost_per_night) must be provided for updating.")
+
+        # Construct and execute the update query for any changes made
+        query = f"""
             UPDATE properties 
-            SET 
-                name = %s, 
-                description = %s, 
-                cost_per_night = %s
-            WHERE name = %s
+            SET {', '.join(set_clause)}
+            WHERE id = {property_id}
         """
-        self._connection.execute(query, [property.name, property.description, property.cost_per_night, property.user_id])
-
-"""
-python
-
-class BookRepository: # Existing methods... # Update a book by its id 
-
-def update(self, book): self._connection.execute( 'UPDATE books SET title = %s, author_name = %s WHERE id = %s', \
-    [ book.title, book.author_name, book.id]) 
-return None
-
-"""
+        self._connection.execute(query)
