@@ -17,6 +17,13 @@
         <h3>Register</h3>
 
         <form action="/create_user" method="POST">
+            
+            {% if errors %}
+                <p class="errors">
+                    There were errors with your submission: {{errors}}
+                </p>
+            {% endif %}
+
             <input type="text" name="username">
             <br>
             <input type="text" name="email">

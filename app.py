@@ -5,6 +5,7 @@ from lib.user_repo import userRepository
 from lib.user import User
 from lib.property_repository import PropertyRepository
 from lib.property import Property
+from lib.user_parameters_validator import UserParametersValidator
 # Create a new Flask app
 app = Flask(__name__)
 
@@ -38,7 +39,11 @@ def post_create_user():
     password = request.form['password']
     phone = request.form['phone']
     user = User(None, username, email, password, phone)
-    user = repository.create(user)
+    validator = UserParametersValidator(username, email, password, phone)
+    if not validator.is_valid():
+        return render_template('create_user.html', errors=validator.generate_errors()), 400
+    else:
+        user = repository.create(user)
     return redirect('/index')
 
 @app.route('/create_property')
