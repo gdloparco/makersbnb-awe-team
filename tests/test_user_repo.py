@@ -48,3 +48,13 @@ def test_delete(db_connection):
         User(2, 'Andre', 'andre@gmail.com', 'andre123', "07463228136"),
         User(3, 'Booker', 'booker@gmail.com', 'booker123', "01163228136")
     ]
+
+#  test find all properties from user
+#  it might make more sense to have as a location rather than user?? 
+def test_find_properties_by_username(db_connection):
+    db_connection.seed('seeds/makersbnb_seed.sql')
+    user_repo = userRepository(db_connection)
+
+    property_from_user = user_repo.find_properties_by_username("Venera")
+
+    assert property_from_user == User(1, 'Venera', 'venera@gmail.com', 'venera123', "07463648536",[Property(3, 'Astana', 'Yurt', 450, 1)])

@@ -1,6 +1,7 @@
 class Property():
 
-    def __init__(self, name, description, cost_per_night, user_id):
+    def __init__(self, id, name, description, cost_per_night, user_id):
+        self.id = id
         self.name = name
         self.description = description
         self.cost_per_night = cost_per_night
