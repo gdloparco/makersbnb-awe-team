@@ -20,7 +20,10 @@ def get_index():
 
 @app.route('/property_list', methods=['GET'])
 def get_property_list():
-    return render_template('property_list.html')
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    properties = repository.all()
+    return render_template('property_list.html', properties = properties)
 
 @app.route('/create_user')
 def get_create_user():
@@ -32,9 +35,11 @@ def post_create_user():
     repository = userRepository(connection)
     username = request.form['username']
     email = request.form['email']
-    user = User(None, username, email, "123", "12345")
+    password = request.form['password']
+    phone = request.form['phone']
+    user = User(None, username, email, password, phone)
     user = repository.create(user)
-    return redirect('/property_list')
+    return redirect('/index')
 
 @app.route('/create_property')
 def get_create_property():

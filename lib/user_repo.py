@@ -24,8 +24,10 @@ class userRepository:
     
     # Create a new user
     def create(self, user):
-        rows = self._connection.execute("INSERT INTO users (username, email, password, phone) VALUES (%s,%s,%s,%s)",[user.username, user.email, user.password, user.phone])
-        return None
+        rows = self._connection.execute("INSERT INTO users (username, email, password, phone) VALUES (%s,%s,%s,%s) RETURNING id",[user.username, user.email, user.password, user.phone])
+        row = rows[0]
+        user.id = row['id']
+        return user
     
     # Delete an existing user
     def delete(self, username):
