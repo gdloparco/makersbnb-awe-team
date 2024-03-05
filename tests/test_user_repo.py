@@ -1,10 +1,10 @@
 from lib.user import *
-from lib.user_repository import *
+from lib.user_repo import *
 
 # test all user function - Do we want to see all users?
 def test_all(db_connection):
     db_connection.seed('seeds/makersbnb_seed.sql')
-    user_repo = UserRepository(db_connection)
+    user_repo = userRepository(db_connection)
 
     result = user_repo.all()
 
@@ -16,7 +16,7 @@ def test_all(db_connection):
 # test find user by username function
 def test_find(db_connection):
     db_connection.seed('seeds/makersbnb_seed.sql')
-    user_repo = UserRepository(db_connection)
+    user_repo = userRepository(db_connection)
 
     result = user_repo.find('Venera')
 
@@ -25,7 +25,7 @@ def test_find(db_connection):
 #  test creating a new user
 def test_create(db_connection):
     db_connection.seed('seeds/makersbnb_seed.sql')
-    user_repo = UserRepository(db_connection)
+    user_repo = userRepository(db_connection)
 
     user_repo.create(User(4, 'Dom', 'dom@gmail.com', 'dom123', "07463648537"))
 
@@ -39,7 +39,7 @@ def test_create(db_connection):
 #  test creating a new user
 def test_delete(db_connection):
     db_connection.seed('seeds/makersbnb_seed.sql')
-    user_repo = UserRepository(db_connection)
+    user_repo = userRepository(db_connection)
 
     user_repo.delete("Dom")
 
@@ -53,7 +53,7 @@ def test_delete(db_connection):
 #  it might make more sense to have as a location rather than user?? 
 def test_find_properties_by_username(db_connection):
     db_connection.seed('seeds/makersbnb_seed.sql')
-    user_repo = UserRepository(db_connection)
+    user_repo = userRepository(db_connection)
 
     property_from_user = user_repo.find_properties_by_username("Venera")
 

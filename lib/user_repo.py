@@ -1,7 +1,7 @@
 from lib.user import User
 from lib.property import Property
 
-class UserRepository:
+class userRepository:
 
     # We initialise with a database connection
     def __init__(self, connection):
