@@ -6,6 +6,7 @@ from lib.user import User
 from lib.property_repository import PropertyRepository
 from lib.property import Property
 from lib.user_parameters_validator import UserParametersValidator
+from lib.property_parameters_validator import PropertyParametersValidator
 # Create a new Flask app
 app = Flask(__name__)
 
@@ -62,7 +63,11 @@ def post_create_property():
     cost_per_night = request.form['cost_per_night']
     user_id = request.form['username']
     property = Property(name, description, cost_per_night, user_id)
-    property = repository.create(property)
+    validator = PropertyParametersValidator(name, description, cost_per_night)
+    if not validator.is_valid():
+        return render_template('create_property.html', errors=validator.generate_errors()), 400
+    else:
+        property = repository.create(property)
     return redirect('/property_list')
 
 # These lines start the server if you run this file directly

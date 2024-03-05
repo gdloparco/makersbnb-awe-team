@@ -17,6 +17,13 @@
         <h3>List a property</h3>
 
         <form action="/create_property" method="POST">
+
+            {% if errors %}
+                <p class="errors">
+                    There were errors with your submission: {{errors}}
+                </p>
+            {% endif %}
+
             <input type="text" name="name">
             <br>
             <input type="text" name="description">
