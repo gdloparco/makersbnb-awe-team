@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MakersBnB</title>
@@ -9,8 +9,13 @@
     {% block styles %}{% endblock %}
 </head>
 <header>
-    <a href="/index"><h1>MakersBnB</h1></a>
-    <a href="/create_user">Register as a User</a>
+    <div class="header">
+        <a href="/index"><h1>MakersBnB</h1></a>
+        <a href="/property_list">See properties</a>
+        <a href="/create_property">List your property</a>
+        <a href="/create_user">Log in</a>
+    </div>
+    
 </header>
 <body>
     {% block content %}{% endblock %}
