@@ -13,7 +13,12 @@ class PropertyRepository():
     def create(self, property):
         self._connection.execute('INSERT INTO properties (name, description, cost_per_night, user_id) VALUES (%s, %s, %s, %s) RETURNING id', [property.name, property.description, property.cost_per_night, property.user_id])
         return None
-    
+
+    # Retrieve a specific property
+    def find(self, id):
+        rows = self._connection.execute('SELECT * FROM properties WHERE id=%s', [id])
+        row = rows[0]
+        return Property(row["id"], row["name"], row["description"], row["cost_per_night"], row["user_id"])
 
     def update_property(self, property_id, name=None, description=None, cost_per_night=None):
         # Construct the SET clause based on provided values to be updated
