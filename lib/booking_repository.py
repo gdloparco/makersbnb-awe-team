@@ -1,17 +1,33 @@
-class Booking:
-    # read property(property booked details) and user(all but password)
+from datetime import date
+from lib.booking import *
+from lib.property import *
 
-    def __init__(self, ):
+class BookingRepository:
+    # read property(property booked details) and booking(all but password)
 
-# calculate length of stay
-    def lenght_of_stay(self, ):
+    def __init__(self, connection):
+        self._connection = connection
+
+    # Find all properties from a single booking, it might make more sense to have as a location rather than booking?? 
+    # What do you guys think?
+    def find_bookings_by_property_id(self, property_id):
+            rows = self._connection.execute(
+        "SELECT bookings.id AS booking_id, bookings.property_id AS booking_property_id, bookings.start_date, bookings.end_date, bookings.user_id AS booking_user_id, properties.id AS property_id, properties.name, properties.description, properties.cost_per_night, properties.user_id AS property_user_id "
+        "FROM properties JOIN bookings ON properties.id = bookings.property_id "
+        "WHERE bookings.property_id = %s", [property_id])
+            
+            bookings = []
+            
+            for row in rows:
+                booking = Booking(row["booking_id"], row["start_date"], row["end_date"], row["booking_user_id"],row["property_id"] )
+                bookings.append(booking)
+            print(booking)
+            # Each row has the same id, property_id, and email, , and email, , so we just use the first
+            return Property(rows[0]["property_id"], rows[0]["name"], rows[0]["description"], rows[0]["cost_per_night"], rows[0]["property_user_id"], bookings)
         
-# total cost of booking
-    def total_cost_reservation(self,):
-        
-# see all reservations for one property
-    def all_by_property(self,):
 
+
+"""`
 # show available dates
     def show_availability(self, ):
         
@@ -21,3 +37,4 @@ class Booking:
 # confirmation to guest/(ideally to owner too)
     def booking_confirmation(self, ):
         
+"""
