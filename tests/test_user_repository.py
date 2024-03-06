@@ -28,13 +28,13 @@ def test_create(db_connection):
     db_connection.seed('seeds/makersbnb_seed.sql')
     user_repo = UserRepository(db_connection)
 
-    user_repo.create(User(4, 'Dom', 'dom@gmail.com', 'dom123', "07463648537"))
+    user_repo.create(User(4, 'Dom', 'dom@gmail.com', 'gaojgeoag!123', "07463648537"))
 
     assert user_repo.all() == [
         User(1, 'Venera', 'venera@gmail.com', 'venera123', "07463648536"),
         User(2, 'Andre', 'andre@gmail.com', 'andre123', "07463228136"),
         User(3, 'Booker', 'booker@gmail.com', 'booker123', "01163228136"),
-        User(4, 'Dom', 'dom@gmail.com', 'dom123', "07463648537")
+        User(4, 'Dom', 'dom@gmail.com', 'gaojgeoag!123', "07463648537")
     ]
 
 #  test creating a new user
