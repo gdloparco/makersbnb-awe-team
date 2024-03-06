@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}MakersBNB{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <h3>Log in to MakersBnB</h3>
+
+    <form action="/log_in" method="POST">
+        
+        {% if errors %}
+            <p class="errors">
+                There were errors with your submission: {{errors}}
+            </p>
+        {% endif %}
+
+        <input type="text" name="username">
+        <br>
+        <input type="text" name="password">
+        <br>
+        <input type="submit" value="Log in">
+    </form>
+    <br>
+    <footer>@TeamVenera</footer>
+{% endblock %}
