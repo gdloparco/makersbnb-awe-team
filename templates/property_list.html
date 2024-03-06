@@ -6,15 +6,26 @@
 {% endblock %}
 
 {% block content %}
-    <h3>See our fabulous properties below!</h3>
-    <ul>
+    <div class="menu">
+        <div class="welcome">
+            <h3>See our fabulous properties below!</h3>
+        </div>
+
         {% for property in properties %}
-        <li>
-            <a href="/property_{{property.id}}">{{property.name}}</a>
-            {{property.description}}
-            {{property.cost_per_night}}
-        </li>
+        <div class="property">
+            <div class="property-image">
+                <img src="" alt="">
+            </div>
+            <div class="description">
+                <a href="/property_{{property.id}}">{{property.name}}</a>
+                <br>
+                Description: {{property.description}}
+                <br>
+                Cost per night: {{property.cost_per_night}}
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
+    
     <footer>@TeamVenera</footer>
 {% endblock %}
