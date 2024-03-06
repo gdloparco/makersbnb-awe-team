@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}MakersBNB{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <h3>List a property</h3>
+
+    <form action="/create_property" method="POST">
+
+        {% if errors %}
+            <p class="errors">
+                There were errors with your submission: {{errors}}
+            </p>
+        {% endif %}
+
+        <input type="text" name="name">
+        <br>
+        <input type="text" name="description">
+        <br>
+        <input type="number" name="cost_per_night">
+        <br>
+        <input type="text" name="username">
+        <br>
+        <input type="submit" value="List my property">
+    </form>
+    <br>
+    <footer>@TeamVenera</footer>
+{% endblock %}

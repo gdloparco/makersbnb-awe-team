@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>MakersBnB</title>
+{% extends 'base.html' %}
 
-        <!--
-            Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
-            If you're wondering how the CSS file below is being loaded.
-        -->
-        <link rel="stylesheet" href="/static/style.css" >
-    </head>
-    <body>
-        <p>This is the homepage.</h1>
-    </body>
-</html>
+{% block title %}MakersBNB{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <h3>Welcome to MakersBnB, the fastest growing property hire app in the world!</h3>
+    <br>
+    <a href="/property_list">Rent one of our properties</a>
+    <br>
+    <a href="/create_property">List your property</a>
+    <br>
+    <footer>@TeamVenera</footer>
+{% endblock %}
+

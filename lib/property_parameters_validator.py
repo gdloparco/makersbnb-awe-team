@@ -6,16 +6,17 @@ class PropertyParametersValidator:
         self.cost_per_night = cost_per_night
 
     def is_valid(self):
-        return self._is_name_valid() and  self._is_description_valid() and self._is_cost_per_night_valid()
+        return self._is_name_valid() and self._is_description_valid() and self._is_cost_per_night_valid()
     
     def generate_errors(self):
         errors = []
         if not self._is_name_valid():
-            errors.append("Name must not be blank")
+            errors.append("name must not be blank")
         if not self._is_description_valid():
-            errors.append("Description must not be blank")
+            errors.append("description must not be blank")
         if not self._is_cost_per_night_valid():
-            errors.append("Cost per night must not be blank")
+            errors.append("cost per night must not be blank")
+        errors = ", ".join(errors)
         return errors
     
     def get_valid_name(self):
