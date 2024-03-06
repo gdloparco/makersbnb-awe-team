@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}MakersBNB{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <h3>See our fabulous properties below!</h3>
+    <ul>
+        {% for property in properties %}
+        <li>
+            {{property.name}}
+            {{property.description}}
+            {{property.cost_per_night}}
+        </li>
+        {% endfor %}
+    </ul>
+    <footer>@TeamVenera</footer>
+{% endblock %}

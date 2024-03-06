@@ -1,7 +1,7 @@
 from lib.user import User
-# from lib.property import Property
+from lib.property import Property
 
-class userRepository:
+class UserRepository:
 
     # We initialise with a database connection
     def __init__(self, connection):
@@ -22,8 +22,6 @@ class userRepository:
         row = rows[0]
         return User(row["id"], row["username"], row["email"], row["password"], row["phone"])
     
-
-
     # Create a new user
     def create(self, new_user):
         rows = self._connection.execute('SELECT * from users')
@@ -40,8 +38,7 @@ class userRepository:
             raise Exception("Password is not valid: password must be minimum 8 characters long and contain one of the following: '!@$%&'")
 
         self._connection.execute("INSERT INTO users (username, email, password, phone) VALUES (%s,%s,%s,%s)",[new_user.username, new_user.email, new_user.password, new_user.phone])
-        return None
-    
+        return new_user
 
     # Delete an existing user
     def delete(self, username):
@@ -51,23 +48,16 @@ class userRepository:
     def password_manager(self, password):
         return len(password) >= 8 and any(char in password for char in '!@$%&')
 
-
-"""
-   
-    # Find a single user, along with their properties
-    # Needs to be reviewed once Property Class is finished
-    # Review SQL
-    def find_properties_by_user_id(self, user_id):
+# Find all properties from a single user, it might make more sense to have as a location rather than user??
+# What do you guys think?
+    def find_properties_by_username(self, username):
         rows = self._connection.execute(
-            "SELECT users.id AS user_id, users.username, users.starting_date, properties.id AS propertie_id, properties.username, properties.user_id " \
-            "FROM users JOIN properties ON users.id = properties.user_id " \
-            "WHERE users.id = %s", [user_id])
+    "SELECT users.id AS user_id, users.username, users.email, users.password, users.phone, properties.id AS property_id, properties.name, properties.description, properties.cost_per_night "
+    "FROM users JOIN properties ON users.id = properties.user_id "
+    "WHERE users.username = %s", [username])
         properties = []
         for row in rows:
-            property = Property(row["properties_id"], row["name"], row["description"], row["cost_per_night"])
+            property = Property(row["property_id"], row["name"], row["description"], row["cost_per_night"],row["user_id"] )
             properties.append(property)
-
         # Each row has the same id, username, and email, , and email, , so we just use the first
-        return User(rows[0]["user_id"], rows[0]["user_username"], rows[0]["user_email"], rows[0]["user_password"], rows[0]["user_phone"], properties)
-    
-    """
+        return User(rows[0]["user_id"], rows[0]["username"], rows[0]["email"], rows[0]["password"], rows[0]["phone"], properties)

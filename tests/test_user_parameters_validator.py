@@ -58,24 +58,13 @@ Produces errors
 """
 def test_generate_errors():
     validator_1 = UserParametersValidator("", "", "andre123", "074747312")
-    assert validator_1.generate_errors() == [
-        "Username must not be blank",
-        "Email must not be blank"
-    ]
+    assert validator_1.generate_errors() == "username must not be blank, email must not be blank"
 
     validator_2 = UserParametersValidator("", "", "", "")
-    assert validator_2.generate_errors() == [
-        "Username must not be blank",
-        "Email must not be blank",
-        "Password must not be blank",
-        "Phone must not be blank"
-    ]
+    assert validator_2.generate_errors() == "username must not be blank, email must not be blank, password must not be blank, phone must not be blank"
     
     validator_3 = UserParametersValidator("Andregois", "andre@fmail.com", "", "")
-    assert validator_3.generate_errors() == [
-        "Password must not be blank",
-        "Phone must not be blank"
-    ]
+    assert validator_3.generate_errors() == "password must not be blank, phone must not be blank"
 
 
 def test_get_valid_username_if_username_valid():

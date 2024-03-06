@@ -12,13 +12,14 @@ class UserParametersValidator:
     def generate_errors(self):
         errors = []
         if not self._is_username_valid():
-            errors.append("Username must not be blank")
+            errors.append("username must not be blank")
         if not self._is_email_valid():
-            errors.append("Email must not be blank")
+            errors.append("email must not be blank")
         if not self._is_password_valid():
-            errors.append("Password must not be blank")
+            errors.append("password must not be blank")
         if not self._is_phone_valid():
-            errors.append("Phone must not be blank")
+            errors.append("phone must not be blank")
+        errors = ", ".join(errors)
         return errors
     
     def get_valid_username(self):

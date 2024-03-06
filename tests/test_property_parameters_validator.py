@@ -48,21 +48,13 @@ Produces errors
 """
 def test_generate_errors():
     validator_1 = PropertyParametersValidator("London", "Ancient castle", "")
-    assert validator_1.generate_errors() == [
-        "Cost per night must not be blank"
-    ]
+    assert validator_1.generate_errors() == "cost per night must not be blank"
 
     validator_2 = PropertyParametersValidator("", "", "")
-    assert validator_2.generate_errors() == [
-        "Name must not be blank",
-        "Description must not be blank",
-        "Cost per night must not be blank"
-    ]
+    assert validator_2.generate_errors() == "name must not be blank, description must not be blank, cost per night must not be blank"
     
     validator_3 = PropertyParametersValidator("", "Ancient castle", 150)
-    assert validator_3.generate_errors() == [
-        "Name must not be blank"
-    ]
+    assert validator_3.generate_errors() == "name must not be blank"
 
 
 def test_get_valid_name_if_name_valid():
