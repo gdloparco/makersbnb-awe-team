@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, render_template, redirect
 from lib.database_connection import get_flask_database_connection
-from lib.user_repo import userRepository
+from lib.user_repository import UserRepository
 from lib.user import User
 from lib.property_repository import PropertyRepository
 from lib.property import Property
@@ -34,7 +34,7 @@ def get_create_user():
 @app.route('/create_user', methods=['POST'])
 def post_create_user():
     connection = get_flask_database_connection(app)
-    repository = userRepository(connection)
+    repository = UserRepository(connection)
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
