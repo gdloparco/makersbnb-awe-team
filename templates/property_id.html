@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}MakersBNB{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <p class="t-property-name">{{property.name}}</p>
+    <p class="t-description">{{property.description}}</p>
+    <p class="t-cost-per-night">£{{property.cost_per_night}} per night</p>
+
+    <a href="/property_list">Back to all property listings</a>
+{% endblock %}
