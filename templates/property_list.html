@@ -10,7 +10,7 @@
     <ul>
         {% for property in properties %}
         <li>
-            {{property.name}}
+            <a href="/property_{{property.id}}">{{property.name}}</a>
             {{property.description}}
             {{property.cost_per_night}}
         </li>
