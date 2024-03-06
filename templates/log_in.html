@@ -6,28 +6,24 @@
 {% endblock %}
 
 {% block content %}
-    
-    
 
-    <form action="/create_user" method="POST">
-        <div class="menu">
-            <div class="welcome"> <h3>Register</h3> </div>
+
+<form action="/log_in" method="POST">
+    <div class="menu">
+        <div class="welcome"><h3>Log in to MakersBnB</h3></div>
             {% if errors %}
                 <p class="errors">
                     There were errors with your submission: {{errors}}
                 </p>
             {% endif %}
-    
             <input placeholder="username" class="input" type="text" name="username">
-            <br>
-            <input placeholder="e-mail" class="input" type="text" name="email">
             <br>
             <input placeholder="password" class="input" type="text" name="password">
             <br>
-            <input placeholder="phone number" class="input" type="text" name="phone">
-            <br>
-            <input class="submit" type="submit" value="Register">
+            <input class="submit" type="submit" value="Log in">
         </div>
-        
-    </form>
+    </div>
+</form>
+
+
 {% endblock %}
