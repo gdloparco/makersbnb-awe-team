@@ -52,7 +52,7 @@ def test_delete(db_connection):
 
 def test_create_existsing_user_will_raise_error(db_connection):
     db_connection.seed('seeds/makersbnb_seed.sql')
-    user_repo = userRepository(db_connection)
+    user_repo = UserRepository(db_connection)
     with pytest.raises(Exception) as e:
         user_repo.create(User(None, 'Venera', 'venera@gmail.com', 'venera123', "07463648536"))
     error_message = str(e.value)
@@ -60,7 +60,7 @@ def test_create_existsing_user_will_raise_error(db_connection):
 
 def test_password_is_valid_will_raise_error(db_connection):
     db_connection.seed('seeds/makersbnb_seed.sql')
-    user_repo = userRepository(db_connection)
+    user_repo = UserRepository(db_connection)
     with pytest.raises(Exception) as e:
         user_repo.create(User(None, 'Matt', 'venera@gmail.com', 'venera123', "07463648536"))
     error_message = str(e.value)
