@@ -6,26 +6,28 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Register</h3>
+    
+    
 
     <form action="/create_user" method="POST">
+        <div class="menu">
+            <div class="welcome"> <h3>Register</h3> </div>
+            {% if errors %}
+                <p class="errors">
+                    There were errors with your submission: {{errors}}
+                </p>
+            {% endif %}
+    
+            <input placeholder="username" class="input" type="text" name="username">
+            <br>
+            <input placeholder="e-mail" class="input" type="text" name="email">
+            <br>
+            <input placeholder="password" class="input" type="text" name="password">
+            <br>
+            <input placeholder="phone number" class="input" type="text" name="phone">
+            <br>
+            <input class="submit" type="submit" value="Register">
+        </div>
         
-        {% if errors %}
-            <p class="errors">
-                There were errors with your submission: {{errors}}
-            </p>
-        {% endif %}
-
-        <input type="text" name="username">
-        <br>
-        <input type="text" name="email">
-        <br>
-        <input type="text" name="password">
-        <br>
-        <input type="text" name="phone">
-        <br>
-        <input type="submit" value="Register">
     </form>
-    <br>
-    <footer>@TeamVenera</footer>
 {% endblock %}

@@ -13,19 +13,17 @@
 
         {% for property in properties %}
         <div class="property">
-            <div class="property-image">
-                <img src="" alt="">
+            <div>
+                <img class="property-image" src="/static/img/{{property.name}}.png" alt="castle">
             </div>
-            <div class="description">
-                <a href="/property_{{property.id}}">{{property.name}}</a>
+            <div class="property-description">
+                <p><a class="property-name" href="/property_{{property.id}}">{{property.name}}</a></p>
                 <br>
-                Description: {{property.description}}
+                <p>Description: {{property.description}}</p> 
                 <br>
-                Cost per night: {{property.cost_per_night}}
+                <p>Cost per night: £{{property.cost_per_night}}</p>
             </div>
         </div>
         {% endfor %}
     </div>
-    
-    <footer>@TeamVenera</footer>
 {% endblock %}

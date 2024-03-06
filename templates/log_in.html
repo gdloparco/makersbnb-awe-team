@@ -6,22 +6,24 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Log in to MakersBnB</h3>
 
-    <form action="/log_in" method="POST">
-        
-        {% if errors %}
-            <p class="errors">
-                There were errors with your submission: {{errors}}
-            </p>
-        {% endif %}
 
-        <input type="text" name="username">
-        <br>
-        <input type="text" name="password">
-        <br>
-        <input type="submit" value="Log in">
-    </form>
-    <br>
-    <footer>@TeamVenera</footer>
+<form action="/log_in" method="POST">
+    <div class="menu">
+        <div class="welcome"><h3>Log in to MakersBnB</h3></div>
+            {% if errors %}
+                <p class="errors">
+                    There were errors with your submission: {{errors}}
+                </p>
+            {% endif %}
+            <input placeholder="username" class="input" type="text" name="username">
+            <br>
+            <input placeholder="password" class="input" type="text" name="password">
+            <br>
+            <input class="submit" type="submit" value="Log in">
+        </div>
+    </div>
+</form>
+
+
 {% endblock %}
