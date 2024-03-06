@@ -27,14 +27,95 @@ class BookingRepository:
         
 
 
-"""`
-# show available dates
-    def show_availability(self, ):
-        
-# make reservation, adds reservation to the booking table if criteria of avalability and fields are met
-    def make_reservation(self, ):
 
-# confirmation to guest/(ideally to owner too)
-    def booking_confirmation(self, ):
-        
-"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def all(self):
+        rows = self._connection.execute('SELECT * from bookings')
+        bookings = [Booking(row['id'],row['start_date'], row['end_date'], row['user_id'], row['property_id']) for row in rows]
+        return bookings
+
+    def create(self, booking):
+        query = """
+            SELECT COUNT(*)
+            FROM bookings
+            WHERE property_id = %s
+            AND NOT (%s > end_date OR %s < start_date)
+        """
+        result = self._connection.execute(query, [booking.property_id, booking.end_date, booking.start_date])
+        overlap = result[0].get('count')
+
+        if not overlap:
+            self._connection.execute('INSERT INTO bookings (start_date, end_date, user_id, property_id) VALUES (%s, %s, %s, %s)', [booking.start_date, booking.end_date, booking.user_id, booking.property_id])
+            return None
+        else:
+            raise Exception("Selected period for booking unavailable, try other dates.")
+    
