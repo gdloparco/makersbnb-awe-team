@@ -22,7 +22,9 @@
             <br>
             <input placeholder="e-mail" class="input" type="text" name="email">
             <br>
-            <input placeholder="password" class="input" type="text" name="password">
+            <input id="myInput" placeholder="password" class="input" type="password" name="password">
+            <br>
+            <div class="checkbox"><input type="checkbox" onclick="myFunction()"><div class="show-password">Show Password</div></div>
             <br>
             <input placeholder="phone number" class="input" type="text" name="phone">
             <br>
@@ -30,4 +32,15 @@
         </div>
         
     </form>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+            }
+    </script>
+    
 {% endblock %}
