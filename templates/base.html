@@ -8,22 +8,26 @@
     <title>{% block title %}MakersBNB{% endblock %}</title>
     {% block styles %}{% endblock %}
 </head>
-<header>
-    <div class="header">
-        <a href="/index"><h1>MakersBnB</h1></a>
-        <a href="/property_list">See properties</a>
-        <a href="/create_property">List your property</a>
-        <div>
-            <a href="/create_user">Sign up</a> |
-            <a href="/log_in">Log in</a>
+<div class="container">
+    <header>
+        <div class="header">
+            <a href="/index"><h1>MakersBnB</h1></a>
+            <a href="/property_list">See properties</a>
+            <a href="/create_property">List your property</a>
+            <div>
+                <a href="/create_user">Sign up</a> |
+                <a href="/log_in">Log in</a>
+            </div>
         </div>
-    </div>
+        
+    </header>
+    <body>
+        {% block content %}{% endblock %}
+        {% block scripts %}{% endblock %}
+    </body>
     
-</header>
-<body>
-    {% block content %}{% endblock %}
-    {% block scripts %}{% endblock %}
-</body>
+    <footer class="footer">@TeamVenera</footer>
+</div>
 
-<footer>@TeamVenera</footer>
+
 </html>
