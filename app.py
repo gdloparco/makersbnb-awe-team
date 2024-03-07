@@ -20,6 +20,7 @@ app = Flask(__name__)
 def get_index():
     return render_template('index.html')
 
+# GET PROPERTY ROUTES
 @app.route('/property_list', methods=['GET'])
 def get_property_list():
     connection = get_flask_database_connection(app)
@@ -27,6 +28,19 @@ def get_property_list():
     properties = repository.all()
     return render_template('property_list.html', properties = properties)
 
+# GET /property
+# Returns the property with the supplied name as HTML
+# Try it:
+#   ; open http://localhost:5001/property_{{id}}
+@app.route('/property_<int:id>', methods=['GET'])
+def get_property(id):
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    property = repository.find(id)
+    # We use `render_template` to send the user the file `property_id.html`
+    return render_template('property_id.html', property=property)
+
+# CREATE USER
 @app.route('/create_user')
 def get_create_user():
     return render_template('create_user.html')
@@ -47,6 +61,7 @@ def post_create_user():
         user = repository.create(user)
     return redirect('/index')
 
+# CREATE PROPERTY ROUTES
 @app.route('/create_property')
 def get_create_property():
     connection = get_flask_database_connection(app)
@@ -69,6 +84,25 @@ def post_create_property():
     else:
         property = repository.create(property)
     return redirect('/property_list')
+
+#  Log In
+@app.route('/log_in')
+def get_log_in():
+    return render_template('log_in.html')
+
+@app.route('/log_in', methods=['POST'])
+def post_log_in():
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    email = request.form['email']
+    password = request.form['password']
+    user = User(email=email, password=password)
+    validator = UserParametersValidator(email, password)
+    if not validator.is_valid():
+        return render_template('create_user.html', errors=validator.generate_errors()), 400
+    else:
+        user = repository.create(user)
+    return redirect('/index')
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

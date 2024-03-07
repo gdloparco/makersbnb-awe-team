@@ -6,26 +6,30 @@
 {% endblock %}
 
 {% block content %}
-    <h3>List a property</h3>
 
     <form action="/create_property" method="POST">
-
-        {% if errors %}
-            <p class="errors">
-                There were errors with your submission: {{errors}}
-            </p>
-        {% endif %}
-
-        <input type="text" name="name">
-        <br>
-        <input type="text" name="description">
-        <br>
-        <input type="number" name="cost_per_night">
-        <br>
-        <input type="text" name="username">
-        <br>
-        <input type="submit" value="List my property">
+            <div class="menu">
+                {% if errors %}
+                    <p class="errors">
+                        There were errors with your submission: {{errors}}
+                    </p>
+                {% endif %}
+                <div class="welcome">
+                    <h3>List a property</h3>
+                </div>
+    
+                <div class="inputs">
+                    <input placeholder="name of the property" class="input" type="text" name="name">
+                    <br>
+                    <input placeholder="description" class="input" type="text" name="description">
+                    <br>
+                    <input placeholder="cost per night" class="input" type="number" name="cost_per_night">
+                    <br>
+                    <input placeholder="username" class="input" type="text" name="username">
+                    <br>
+                    <input class="submit" type="submit" value="List my property">
+                </div>
+            </div>   
     </form>
-    <br>
-    <footer>@TeamVenera</footer>
+    
 {% endblock %}

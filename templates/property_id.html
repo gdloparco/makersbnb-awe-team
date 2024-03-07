@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}MakersBNB{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+<div class="menu">
+    <div class="welcome">
+        <h3>You are looking at {{property.name}} booking details.</h3>
+    </div>
+    <div class="property">
+        <div>
+            <img class="property-image" src="/static/img/{{property.name}}.png" alt="castle">
+        </div>
+        <div class="property-description">
+            <p><a class="property-name" href="/property_{{property.id}}">{{property.name}}</a></p>
+            <br>
+            <p>Description: {{property.description}}</p> 
+            <br>
+            <p>Cost per night: £{{property.cost_per_night}}</p>
+        </div>
+    </div>
+    <a href="/property_list" class="submit">Back to all property listings</a>
+</div>
+
+{% endblock %}
