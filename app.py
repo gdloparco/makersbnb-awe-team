@@ -308,6 +308,63 @@ def get_user_details(username):
 
 
 
+
+
+
+
+
+
+
+
+
+# DOM WORKING BELOW
+
+
+
+@app.route('/calendar')
+def get_calendar():
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+
+    return render_template('calendar.html')
+
+@app.route('/property_<int:id>_calendar')
+def get_property_calendar(id):
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    property = repository.find(id)
+    # We use `render_template` to send the user the file `property_id.html`
+    return render_template('property_id_calendar.html', property=property)
+
+
+
+# DOM WORKING ABOVE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
