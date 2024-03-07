@@ -8,6 +8,8 @@ from lib.property import Property
 from lib.user_parameters_validator import UserParametersValidator
 from lib.property_parameters_validator import PropertyParametersValidator
 from lib.comms import EmailManager
+from lib.booking_repository import BookingRepository
+from lib.booking import Booking
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -50,12 +52,30 @@ def get_property_request_success():
 
 @app.route('/make_booking', methods=['POST'])
 def book_property():
-    id = request.form.get('id')
+    # Get the property_id from the webpage based on which
+    # property was being viewed
+    property_id = request.form.get('property_id')
+    # Set up the database connection and repositories
+    # to save the booking to the database and access
+    # owner / user info
     connection = get_flask_database_connection(app)
-    repository = PropertyRepository(connection)
-    repository.update_property(id, description='FULLY BOOKED')
+    booking_repository = BookingRepository(connection)
+    property_repository = PropertyRepository(connection)
+    user_repository = UserRepository(connection)
+    # Get the relevant information to make the booking
+    # and send the confirmation
+    property = property_repository.find(property_id)
+    owner_id = property.user_id
+    owner = user_repository.find_by_id(owner_id)
+    # Create the booking in the bookings table
+    new_booking = Booking(0, '2025-01-01', '2025-02-01', 1, property_id)
+    booking_repository.create(new_booking)
+    # Send email confirmations to the user who made the
+    # booking and the owner, and then redirect the user
+    # to the 'success' page
     emailer = EmailManager()
     emailer.send_email('series4000kryten@gmail.com', 'Your MakersBnB booking', 'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.')
+    emailer.send_email(f'{owner.email}', 'Someone wants to book your MakersBnB property', 'Someone wants to book your MakersBnB property! See the details here, and then approve or deny the request.')
     return redirect('/property_request_sent')
 
 # CREATE USER
@@ -94,8 +114,10 @@ def post_create_property():
     name = request.form['name']
     description = request.form['description']
     cost_per_night = request.form['cost_per_night']
-    user_id = request.form['username']
-    property = Property(name, description, cost_per_night, user_id)
+    username = request.form['username']
+    user_repository = UserRepository(connection)
+    user = user_repository.find(username)
+    property = Property(0, name, description, cost_per_night, user.id)
     validator = PropertyParametersValidator(name, description, cost_per_night)
     if not validator.is_valid():
         return render_template('create_property.html', errors=validator.generate_errors()), 400

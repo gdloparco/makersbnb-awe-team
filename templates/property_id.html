@@ -25,7 +25,8 @@
   
     <div class="make_booking">
         <form action="/make_booking" method="POST">
-            <input type="hidden" name="id" value="{{ property.id }}">
+            <input type="hidden" name="property_id" value="{{ property.id }}">
+            <input type="hidden" name="owner_id" value="{{ property.user_id }}">
             <button type="submit">Book this property</button>
         </form>
     </div>
