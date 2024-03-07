@@ -16,9 +16,15 @@ class UserRepository:
             users.append(item)
         return users
     
-    # Retrieve a specific user
+    # Retrieve a specific user by username
     def find(self, username):
         rows = self._connection.execute('SELECT * FROM users WHERE username=%s', [username])
+        row = rows[0]
+        return User(row["id"], row["username"], row["email"], row["password"], row["phone"])
+    
+        # Retrieve a specific user by their id
+    def find_by_id(self, id):
+        rows = self._connection.execute('SELECT * FROM users WHERE id=%s', [id])
         row = rows[0]
         return User(row["id"], row["username"], row["email"], row["password"], row["phone"])
     

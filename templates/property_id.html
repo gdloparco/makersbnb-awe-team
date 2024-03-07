@@ -20,17 +20,16 @@
             <p>Description: {{property.description}}</p> 
             <br>
             <p>Cost per night: £{{property.cost_per_night}}</p>
+            <br>
+            <form action="/make_booking" method="POST">
+                <input type="hidden" name="property_id" value="{{ property.id }}">
+                <input type="hidden" name="owner_id" value="{{ property.user_id }}">
+                <button type="submit" class="make_booking_button">Book this property</button>
+            </form>
         </div>
     </div>
-  
-    <div class="make_booking">
-        <form action="/make_booking" method="POST">
-            <input type="hidden" name="id" value="{{ property.id }}">
-            <button type="submit">Book this property</button>
-        </form>
-    </div>
-  
+
     <a href="/property_list" class="submit">Back to all property listings</a>
-  
+    
 </div>
 {% endblock %}
