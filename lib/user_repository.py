@@ -60,7 +60,9 @@ class UserRepository:
             property = Property(row["property_id"], row["name"], row["description"], row["cost_per_night"],row["user_id"] )
             properties.append(property)
         # Each row has the same id, username, and email, , and email, , so we just use the first
-        return User(rows[0]["user_id"], rows[0]["username"], rows[0]["email"], rows[0]["password"], rows[0]["phone"], properties)
+        return properties
+
+        # return User(rows[0]["user_id"], rows[0]["username"], rows[0]["email"], rows[0]["password"], rows[0]["phone"], properties)
     
 
 
