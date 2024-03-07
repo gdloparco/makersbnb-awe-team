@@ -62,20 +62,23 @@ def book_property():
     booking_repository = BookingRepository(connection)
     property_repository = PropertyRepository(connection)
     user_repository = UserRepository(connection)
+    start_date = '2025-01-01'
+    end_date = '2025-02-01'
+    total_cost = '500'
     # Get the relevant information to make the booking
     # and send the confirmation
     property = property_repository.find(property_id)
     owner_id = property.user_id
     owner = user_repository.find_by_id(owner_id)
     # Create the booking in the bookings table
-    new_booking = Booking(0, '2025-01-01', '2025-02-01', 1, property_id)
+    new_booking = Booking(0, start_date, end_date, 1, property_id)
     booking_repository.create(new_booking)
     # Send email confirmations to the user who made the
     # booking and the owner, and then redirect the user
     # to the 'success' page
     emailer = EmailManager()
-    emailer.send_email('series4000kryten@gmail.com', 'Your MakersBnB booking', 'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.')
-    emailer.send_email(f'{owner.email}', 'Someone wants to book your MakersBnB property', 'Someone wants to book your MakersBnB property! See the details here, and then approve or deny the request.')
+    emailer.send_email('series4000kryten@gmail.com', 'Your MakersBnB booking', f'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.\n\nYour booking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{total_cost}')
+    emailer.send_email(owner.email, 'Someone wants to book your MakersBnB property', f'Someone wants to book your MakersBnB property! See the details below, and then approve or deny the request.\n\nBooking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{total_cost}')
     return redirect('/property_request_sent')
 
 # CREATE USER
