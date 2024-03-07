@@ -16,7 +16,7 @@
             <a href="/create_property">List your property</a>
             {% if username %}
               <div>
-                  <a href="/create_user">{{session['username']}}</a> |
+                  <a href="/user_{{ username }}">{{session['username']}}</a> |
                   <a href="/logout">Log out</a>
               </div>
               {% endif %}

@@ -206,6 +206,89 @@ def logout():
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# get page user details
+@app.route('/user_<username>', methods=['GET'])
+def get_user_details(username):
+    connection = get_flask_database_connection(app)
+    user_repo = UserRepository(connection)
+    properties = user_repo.find_properties_by_username(username)
+    if 'username' in session:
+        username = session['username']
+        return render_template('user_profile.html', username = username, properties = properties)
+    return render_template('user_profile.html', username = username)
+
+
+# GET /property
+# Returns the property with the supplied name as HTML
+# Try it:
+#   ; open http://localhost:5001/property_{{id}}
+# @app.route('/property_<int:id>', methods=['GET'])
+# def get_property(id):
+#     connection = get_flask_database_connection(app)
+#     repository = PropertyRepository(connection)
+#     property = repository.find(id)
+#     if 'username' in session:
+#         username = session['username']
+#         return render_template('property_id.html', username = username, property = property)
+#     # We use `render_template` to send the user the file `property_id.html`
+#     return render_template('property_id.html', property=property)
+
+
+
+
+
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.

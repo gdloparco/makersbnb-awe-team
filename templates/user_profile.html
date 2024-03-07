@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}MakersBNB{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+<br>
+    <h3>My account - Welcome {{ username }}</h3>
+
+    <br>
+    <br>
+
+
+    <form action="/user_{{ username }}" method="GET">
+        
+        {% if errors %}
+            <p class="errors">
+                There were errors with your submission: {{errors}}
+            </p>
+        {% endif %}
+
+        {% if properties %}
+            {% for property in properties %}
+                <div class="property">
+                    <div class="property-image">
+                        <img src="{{ property.image_url }}" alt="{{ property.name }}">
+                    </div>
+                    <div class="description">
+                        <a href="/property_{{property.id}}">{{property.name}}</a>
+                        <br>
+                        Description: {{property.description}}
+                        <br>
+                        Cost per night: {{property.cost_per_night}}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}  
+        <br>
+        <br>
+            <p>No properties listed.</p>
+        {% endif %}
+        <br>  
+        <br>
+        <br>
+        <br>
+
+        <h4>Update my details</h4>
+
+        <input type="text" name="password" placeholder="New password">
+        <br>
+        <input type="text" name="email" placeholder="New email">
+        <br>
+        <input type="text" name="phone" placeholder="New phone number">
+        <br>
+        <input type="submit" value="Save">
+        <br>
+        <input type="submit" value="Sign out">
+    </form>
+    <br>
+{% endblock %}
