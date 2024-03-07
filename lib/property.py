@@ -1,6 +1,6 @@
 class Property():
 
-    def __init__(self, id, name, description, cost_per_night, user_id):
+    def __init__(self, id, name, description, cost_per_night, user_id, bookings = []):
         self.id = id
         self.name = name
         self.description = description
@@ -11,4 +11,4 @@ class Property():
         return self.__dict__ == other.__dict__
     
     def __repr__(self):
-        return f'Property details: {self.name}, {self.description}, £{self.cost_per_night}'
+        return f'Property({self.id}, {self.name}, {self.description}, {self.cost_per_night}, {self.user_id})'
