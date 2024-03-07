@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session, url_for
 from lib.database_connection import get_flask_database_connection
 from lib.user_repository import UserRepository
 from lib.user import User
@@ -7,8 +7,16 @@ from lib.property_repository import PropertyRepository
 from lib.property import Property
 from lib.user_parameters_validator import UserParametersValidator
 from lib.property_parameters_validator import PropertyParametersValidator
+from lib.comms import EmailManager
+from lib.booking_repository import BookingRepository
+from lib.booking import Booking
+
 # Create a new Flask app
 app = Flask(__name__)
+
+# Secret key for session management
+app.secret_key = 'teamvenerarulestheworld!@£$%'
+
 
 # == Your Routes Here ==
 
@@ -18,6 +26,9 @@ app = Flask(__name__)
 #   ; open http://localhost:5000/index
 @app.route('/index', methods=['GET'])
 def get_index():
+    if 'username' in session:
+        username = session['username']
+        return render_template('index.html', username = username)
     return render_template('index.html')
 
 # GET PROPERTY ROUTES
@@ -26,6 +37,9 @@ def get_property_list():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
+    if 'username' in session:
+        username = session['username']
+        return render_template('property_list.html', username = username, properties = properties)
     return render_template('property_list.html', properties = properties)
 
 # GET /property
@@ -37,8 +51,48 @@ def get_property(id):
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = repository.find(id)
+    if 'username' in session:
+        username = session['username']
+        return render_template('property_id.html', username = username, property = property)
     # We use `render_template` to send the user the file `property_id.html`
     return render_template('property_id.html', property=property)
+
+# BOOK PROPERTY ROUTES
+# BOOK /PROPERTY_{ID}
+@app.route('/property_request_sent', methods=['GET'])
+def get_property_request_success():
+    return render_template('property_request_sent.html')
+
+@app.route('/make_booking', methods=['POST'])
+def book_property():
+    # Get the property_id from the webpage based on which
+    # property was being viewed
+    property_id = request.form.get('property_id')
+    # Set up the database connection and repositories
+    # to save the booking to the database and access
+    # owner / user info
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    property_repository = PropertyRepository(connection)
+    user_repository = UserRepository(connection)
+    start_date = '2025-01-01'
+    end_date = '2025-02-01'
+    total_cost = '500'
+    # Get the relevant information to make the booking
+    # and send the confirmation
+    property = property_repository.find(property_id)
+    owner_id = property.user_id
+    owner = user_repository.find_by_id(owner_id)
+    # Create the booking in the bookings table
+    new_booking = Booking(0, start_date, end_date, 1, property_id)
+    booking_repository.create(new_booking)
+    # Send email confirmations to the user who made the
+    # booking and the owner, and then redirect the user
+    # to the 'success' page
+    emailer = EmailManager()
+    emailer.send_email('series4000kryten@gmail.com', 'Your MakersBnB booking', f'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.\n\nYour booking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{total_cost}')
+    emailer.send_email(owner.email, 'Someone wants to book your MakersBnB property', f'Someone wants to book your MakersBnB property! See the details below, and then approve or deny the request.\n\nBooking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{total_cost}')
+    return redirect('/property_request_sent')
 
 # CREATE USER
 @app.route('/create_user')
@@ -55,8 +109,8 @@ def post_create_user():
     phone = request.form['phone']
     user = User(None, username, email, password, phone)
     validator = UserParametersValidator(username, email, password, phone)
-    if not validator.is_valid():
-        return render_template('create_user.html', errors=validator.generate_errors()), 400
+    if not validator.is_valid() or not validator.is_password_valid():
+        return render_template('create_user.html', errors=validator.generate_errors(), password_errors=validator.generate_password_errors()), 400
     else:
         user = repository.create(user)
     return redirect('/index')
@@ -67,6 +121,9 @@ def get_create_property():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
+    if 'username' in session:
+        username = session['username']
+        return render_template('create_property.html', username = username, properties = properties)    
     return render_template('create_property.html', properties = properties)
 
 @app.route('/create_property', methods=['POST'])
@@ -76,8 +133,10 @@ def post_create_property():
     name = request.form['name']
     description = request.form['description']
     cost_per_night = request.form['cost_per_night']
-    user_id = request.form['username']
-    property = Property(name, description, cost_per_night, user_id)
+    username = request.form['username']
+    user_repository = UserRepository(connection)
+    user = user_repository.find(username)
+    property = Property(0, name, description, cost_per_night, user.id)
     validator = PropertyParametersValidator(name, description, cost_per_night)
     if not validator.is_valid():
         return render_template('create_property.html', errors=validator.generate_errors()), 400
@@ -90,6 +149,7 @@ def post_create_property():
 def get_log_in():
     return render_template('log_in.html')
 
+"""
 @app.route('/log_in', methods=['POST'])
 def post_log_in():
     connection = get_flask_database_connection(app)
@@ -103,6 +163,48 @@ def post_log_in():
     else:
         user = repository.create(user)
     return redirect('/index')
+"""
+
+# Log In - ANDRE VERSION
+@app.route('/log_in', methods=['POST'])
+def post_log_in():
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    email = request.form['email']
+    password = request.form['password']
+
+    # Validate user input
+    validator = UserParametersValidator(username=None, email=email, password=password, phone=None)
+
+    if not validator.login_is_valid():
+        # Handle invalid input
+        return render_template('log_in.html', errors=[validator.generate_errors()])
+
+    # Validate credentials and retrieve the user
+    user = repository.find_by_email(email)
+
+    if user and user.password == password:  # Check password here
+        # Set the user's ID in the session
+        session['user_id'] = user.id
+        session['username'] = user.username
+        return redirect('/index')
+    else:
+        # Handle invalid credentials
+        return render_template('log_in.html', errors=['Invalid email or password'])
+
+# Log out
+@app.route('/logout', methods=['GET'])
+def logout():
+    # Clear the user session
+    session.clear()
+
+    # Redirect to the login page (or any other desired page)
+    return redirect(url_for('get_index'))
+
+
+
+
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
