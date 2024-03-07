@@ -10,5 +10,10 @@
     <p class="t-description">{{property.description}}</p>
     <p class="t-cost-per-night">£{{property.cost_per_night}} per night</p>
 
+    <form action="/make_booking" method="POST">
+        <input type="hidden" name="id" value="{{ property.id }}">
+        <button type="submit">Book this property</button>
+    </form>
+
     <a href="/property_list">Back to all property listings</a>
 {% endblock %}

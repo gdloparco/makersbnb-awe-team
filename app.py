@@ -7,6 +7,8 @@ from lib.property_repository import PropertyRepository
 from lib.property import Property
 from lib.user_parameters_validator import UserParametersValidator
 from lib.property_parameters_validator import PropertyParametersValidator
+from lib.comms import EmailManager
+
 # Create a new Flask app
 app = Flask(__name__)
 
@@ -39,6 +41,22 @@ def get_property(id):
     property = repository.find(id)
     # We use `render_template` to send the user the file `property_id.html`
     return render_template('property_id.html', property=property)
+
+# BOOK PROPERTY ROUTES
+# BOOK /PROPERTY_{ID}
+@app.route('/property_request_sent', methods=['GET'])
+def get_property_request_success():
+    return render_template('property_request_sent.html')
+
+@app.route('/make_booking', methods=['POST'])
+def book_property():
+    id = request.form.get('id')
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    repository.update_property(id, description='FULLY BOOKED')
+    emailer = EmailManager()
+    emailer.send_email('series4000kryten@gmail.com', 'Your MakersBnB booking', 'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.')
+    return redirect('/property_request_sent')
 
 # CREATE USER
 @app.route('/create_user')
