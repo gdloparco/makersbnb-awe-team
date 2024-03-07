@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session, url_for
 from lib.database_connection import get_flask_database_connection
 from lib.user_repository import UserRepository
 from lib.user import User
@@ -14,6 +14,10 @@ from lib.booking import Booking
 # Create a new Flask app
 app = Flask(__name__)
 
+# Secret key for session management
+app.secret_key = 'teamvenerarulestheworld!@£$%'
+
+
 # == Your Routes Here ==
 
 # GET /index
@@ -22,6 +26,9 @@ app = Flask(__name__)
 #   ; open http://localhost:5000/index
 @app.route('/index', methods=['GET'])
 def get_index():
+    if 'username' in session:
+        username = session['username']
+        return render_template('index.html', username = username)
     return render_template('index.html')
 
 # GET PROPERTY ROUTES
@@ -30,6 +37,9 @@ def get_property_list():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
+    if 'username' in session:
+        username = session['username']
+        return render_template('property_list.html', username = username, properties = properties)
     return render_template('property_list.html', properties = properties)
 
 # GET /property
@@ -41,6 +51,9 @@ def get_property(id):
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = repository.find(id)
+    if 'username' in session:
+        username = session['username']
+        return render_template('property_id.html', username = username, property = property)
     # We use `render_template` to send the user the file `property_id.html`
     return render_template('property_id.html', property=property)
 
@@ -108,6 +121,9 @@ def get_create_property():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
+    if 'username' in session:
+        username = session['username']
+        return render_template('create_property.html', username = username, properties = properties)    
     return render_template('create_property.html', properties = properties)
 
 @app.route('/create_property', methods=['POST'])
@@ -133,6 +149,7 @@ def post_create_property():
 def get_log_in():
     return render_template('log_in.html')
 
+"""
 @app.route('/log_in', methods=['POST'])
 def post_log_in():
     connection = get_flask_database_connection(app)
@@ -146,6 +163,48 @@ def post_log_in():
     else:
         user = repository.create(user)
     return redirect('/index')
+"""
+
+# Log In - ANDRE VERSION
+@app.route('/log_in', methods=['POST'])
+def post_log_in():
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    email = request.form['email']
+    password = request.form['password']
+
+    # Validate user input
+    validator = UserParametersValidator(username=None, email=email, password=password, phone=None)
+
+    if not validator.login_is_valid():
+        # Handle invalid input
+        return render_template('log_in.html', errors=[validator.generate_errors()])
+
+    # Validate credentials and retrieve the user
+    user = repository.find_by_email(email)
+
+    if user and user.password == password:  # Check password here
+        # Set the user's ID in the session
+        session['user_id'] = user.id
+        session['username'] = user.username
+        return redirect('/index')
+    else:
+        # Handle invalid credentials
+        return render_template('log_in.html', errors=['Invalid email or password'])
+
+# Log out
+@app.route('/logout', methods=['GET'])
+def logout():
+    # Clear the user session
+    session.clear()
+
+    # Redirect to the login page (or any other desired page)
+    return redirect(url_for('get_index'))
+
+
+
+
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

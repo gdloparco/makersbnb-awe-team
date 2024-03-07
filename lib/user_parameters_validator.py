@@ -16,6 +16,11 @@ class UserParametersValidator:
     def is_valid(self):
         return self._is_username_valid() and  self._is_email_valid() and self._is_phone_valid()
     
+
+    def login_is_valid(self):
+        return self._is_email_valid() and self._is_password_valid()
+    
+
     def is_password_valid(self):
         return self._is_password_valid()
     
@@ -25,6 +30,7 @@ class UserParametersValidator:
             password_errors.append("Password must be minimum 8 characters long and contain one of the following: '!@$%&'")
         password_errors = ", ".join(password_errors)
         return password_errors
+
 
     def generate_errors(self):
         connection = get_flask_database_connection(app)
