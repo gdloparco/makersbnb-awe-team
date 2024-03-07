@@ -17,10 +17,15 @@
                     There were errors with your submission: {{errors}}
                 </p>
             {% endif %}
-    
             <input placeholder="username" class="input" type="text" name="username">
             <br>
             <input placeholder="e-mail" class="input" type="text" name="email">
+            <br>
+            {% if errors %}
+                <p class="password-errors">
+                    {{password_errors}}
+                </p>
+            {% endif %}
             <br>
             <input id="myInput" placeholder="password" class="input" type="password" name="password">
             <br>

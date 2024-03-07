@@ -73,8 +73,8 @@ def post_create_user():
     phone = request.form['phone']
     user = User(None, username, email, password, phone)
     validator = UserParametersValidator(username, email, password, phone)
-    if not validator.is_valid():
-        return render_template('create_user.html', errors=validator.generate_errors()), 400
+    if not validator.is_valid() or not validator.is_password_valid():
+        return render_template('create_user.html', errors=validator.generate_errors(), password_errors=validator.generate_password_errors()), 400
     else:
         user = repository.create(user)
     return redirect('/index')
