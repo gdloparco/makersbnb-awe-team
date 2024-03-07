@@ -3,7 +3,12 @@
     margin: 0;
     border: 0;
 }
+html{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
+}
 html, body {
     font-size: 18px;
     width: 100%;
@@ -11,8 +16,12 @@ html, body {
     font-family:'Times New Roman', Times, serif;
 }
 
+body{
+    line-height: 1;
+}
+
 header {
-    background-color: rgba(109, 112, 169, 0.712);
+    background-color: #373F51;
     width: 100%;
 }
 
@@ -24,7 +33,7 @@ header {
 
 a {
     text-decoration: none;
-    color: black;
+    color: rgb(255, 255, 255);
 }
 
 .menu {
@@ -33,6 +42,8 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: aliceblue;
+
 }
 
 .welcome {
@@ -51,14 +62,31 @@ a {
     display: flex;
     justify-content: space-evenly;
     border: 2px;
-    background-color: rgb(212, 212, 212);
-    border-radius: 5px;
+    background-color: #A9BCD0;
+    border-radius: 15px;
     margin: 20px;
-    padding: 3%;
+    padding-top: 3%;
+    padding-bottom: 3%;
 }
 
-.description {
-    align-items: right;
+.property:hover {
+    background-color: #b5c6d8;
+}
+
+.property-image{
+    width: 100%;
+    max-height: 250px;
+    height: auto;
+    position: relative;
+    border-radius: 15px;
+}
+
+.property-description {
+    align-items: right;   
+}
+
+.property-name{
+    font-weight: bold;
 }
 
 .inputs {
@@ -69,18 +97,51 @@ a {
 }
 
 .input {
-    background-color: aliceblue;
+    background-color: #DAA49A;
     width: 30%;
     padding: 10px;
+    border-radius: 5px;
+}
+
+.description {
+    width: 30%;
+    height: 100%;
+    padding: 10px;
+    background-color: aliceblue;
 }
 
 .submit {
-    width: 30%;
+    margin-top: 10px;
+    width: 32%;
     padding: 10px;
+    border-radius: 5px;
+    background-color: rgb(168, 167, 167);
 }
 
+.submit:hover{
+    background-color: rgb(207, 206, 206);
+}
+
+.checkbox {
+    display: flex;
+    flex-direction: row;
+    padding-left: 20px;
+    color: rgb(84, 84, 84);
+    font-size: 14px;
+    width: 32%;
+}
+
+.show-password {
+    margin-left: 5px;
+}
 
 .t-property-name {
     font-size: 2.5em;
 }
 
+footer {
+    bottom: 0;
+    width: 100%;
+    max-height: 10px;    
+    display: block;
+}

@@ -103,6 +103,25 @@ def post_create_property():
         property = repository.create(property)
     return redirect('/property_list')
 
+#  Log In
+@app.route('/log_in')
+def get_log_in():
+    return render_template('log_in.html')
+
+@app.route('/log_in', methods=['POST'])
+def post_log_in():
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    email = request.form['email']
+    password = request.form['password']
+    user = User(email=email, password=password)
+    validator = UserParametersValidator(email, password)
+    if not validator.is_valid():
+        return render_template('create_user.html', errors=validator.generate_errors()), 400
+    else:
+        user = repository.create(user)
+    return redirect('/index')
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
