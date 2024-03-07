@@ -25,7 +25,8 @@
             {% for property in properties %}
                 <div class="property">
                     <div class="property-image">
-                        <img src="{{ property.image_url }}" alt="{{ property.name }}">
+                        <img class="property-image" src="" alt="{{property.name}}" data-property-name="{{property.name}}">
+
                     </div>
                     <div class="description">
                         <a href="/property_{{property.id}}">{{property.name}}</a>
@@ -59,4 +60,22 @@
         <input type="submit" value="Sign out">
     </form>
     <br>
+{% endblock %}
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.property-image').forEach(img => {
+            var propertyName = img.getAttribute('data-property-name');
+            fetch("https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=house+" + encodeURIComponent(propertyName))
+                .then(response => response.json())
+                .then(data => {
+                    var smallImageUrl = data.urls.small;
+                    img.src = smallImageUrl;
+                })
+                .catch(error => {
+                    console.error('Error fetching image:', error);
+                });
+        });
+    });
+</script>
 {% endblock %}

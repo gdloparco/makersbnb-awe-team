@@ -202,33 +202,25 @@ html {
     font-size: 62.5%;
 }
 
-.container {
-    width: 100%;
-    height: 100vh;
-    background-color: #12121f;
-    color: #eee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .calendar {
     width: 45rem;
     height: 52rem;
     background-color: #222227;
+    color: #eee;
     box-shadow: 0 0.5rem 3rem rgba(0, 0, 0, 0.4);
+    margin: 2em 0;
 }
 
 .month {
     width: 100%;
     height: 12rem;
-    background-color: #167e56;
+    background-color: #A9BCD0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
     text-align: center;
-    text-shadow: 0 .3rem .5rem rgba(0, 0, 0, 0.5);
+    text-shadow: 0 .3rem .5rem rgba(0, 0, 0, 0.2);
 }
 
 .month i {
@@ -238,14 +230,15 @@ html {
 
 .month h1 {
     font-size: 3rem;
-    font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.2rem;
     margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .month p {
     font-size: 1.6rem;
+    font-weight: 600;
 }
 
 .weekdays {
@@ -297,7 +290,8 @@ html {
 }
 
 .today {
-    background-color: #167e56;
+    background-color: #A9BCD0;
+    font-weight: 600;
 }
 
 /* DOM CALENDAR STYLING ENDS HERE*/
