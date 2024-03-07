@@ -13,10 +13,19 @@
         <a href="/index"><h1>MakersBnB</h1></a>
         <a href="/property_list">See properties</a>
         <a href="/create_property">List your property</a>
+        {% if username %}
+            
+        <div>
+            <a href="/create_user">{{session['username']}}</a> |
+            <a href="/logout">Log out</a>
+        </div>
+        {% endif %}
+        {% if not username %}
         <div>
             <a href="/create_user">Sign up</a> |
             <a href="/log_in">Log in</a>
         </div>
+        {% endif %}
     </div>
     
 </header>

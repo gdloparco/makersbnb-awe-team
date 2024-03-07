@@ -61,3 +61,19 @@ class UserRepository:
             properties.append(property)
         # Each row has the same id, username, and email, , and email, , so we just use the first
         return User(rows[0]["user_id"], rows[0]["username"], rows[0]["email"], rows[0]["password"], rows[0]["phone"], properties)
+    
+
+
+
+
+        # Retrieve a specific user by username or email
+    def find_by_email(self, identifier):
+        # Check if the identifier is an email or username
+        query = (
+            "SELECT * FROM users WHERE username = %s OR email = %s"
+        )
+        rows = self._connection.execute(query, [identifier, identifier])
+        if rows:
+            row = rows[0]
+            return User(row["id"], row["username"], row["email"], row["password"], row["phone"])
+        return None

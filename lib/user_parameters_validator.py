@@ -9,6 +9,9 @@ class UserParametersValidator:
     def is_valid(self):
         return self._is_username_valid() and  self._is_email_valid() and self._is_password_valid() and self._is_phone_valid()
     
+    def login_is_valid(self):
+        return self._is_email_valid() and self._is_password_valid()
+    
     def generate_errors(self):
         errors = []
         if not self._is_username_valid():
