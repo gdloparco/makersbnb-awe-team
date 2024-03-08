@@ -8,22 +8,29 @@
 
 
 {% block content %}
-    <div class="menu">
+    <div class="menu background">
         <div class="welcome">
-            <h3>Welcome to MakersBnB, the fastest growing property hire app in the world!</h3>
+            <h3>Welcome to VenBNB, the fastest growing property hire app in the world!</h3>
+            <br>
+            <br>
+            <div class="welcome-text"><p>
+                    Your fgnljkasd onjsndfn
+                    Jasndkla gfjnsd dfjgnsd, sdjfnsf. Adfgsdfk, sdflknmsdf asf gksdnf dfgknsnweiopv dfgjowndfopvnw vopijqwn sdfk.
+                    <br><br>Confused? The text above it’s perfect, you need a break, book with us!</p>
+            </div>
         </div>
-        <img class="index-image" src="" alt="index-image">
-        <br>
-        <div class="menu-intro">
-            Welcome to MakersBnB, the premier destination for exceptional property rentals!
-            <br> 
-            As the fastest-growing property hire app globally, MakersBnB is dedicated to redefining your travel experiences. Whether you're an enthusiastic traveler in search of distinctive accommodations or a passionate host eager to share your space, our platform is designed to connect you with unparalleled opportunities.
-            <br>
-            At MakersBnB, we pride ourselves on offering a diverse range of unique properties, from cozy urban apartments to charming rural retreats. Each booking with us is an invitation to embark on a personalized adventure, allowing you to uncover the essence of each destination.
-            For hosts, MakersBnB provides a gateway to a vibrant global community of travelers seeking one-of-a-kind spaces. Joining our platform means becoming part of a dynamic network that values authenticity, creativity, and meaningful connections between hosts and guests.
-            <br>
-            As we continue to expand and innovate, MakersBnB remains committed to enhancing your travel journey. Our user-friendly app ensures a seamless experience, enabling you to effortlessly discover, book, and share spaces. Join the MakersBnB community today and let us transform the way you explore the world, making every stay extraordinary and unforgettable. Your next adventure awaits with MakersBnB!
-        </div> 
+        <div class="review-menu">
+            <div class="review-text">
+                <h5>At VenvBnB, your holidays are important, but our profit is paramount.</h5>
+                <br><h5>Don't take our word, take theirs:</h5></div>
+            <div class="reviews">
+                <img class="review" src="/static/img/image (1).png" alt="1">
+                <img class="review" src="/static/img/image (4).png" alt="1">
+                <img class="review" src="/static/img/image (3).png" alt="1">
+            </div>
+        </div>
+        
+    
     </div>
 {% endblock %}
 
@@ -38,5 +45,26 @@
         .catch(error => {
             console.error('Error fetching image:', error);
         });
+
+    new Swiper('.news-slider', {
+        navigation: {
+            prevEl: '.swiper-button-prev',
+            nextEl: '.swiper-button-next',
+        },
+        slidesPerView: 3,
+        loop: true,
+        speed: 600,
+        breakpoints: {
+            270:{
+                slidesPerView: 1,
+            },
+            700: {
+                slidesPerView: 2,
+            },
+            960: {
+                slidesPerView: 3,
+            },
+        },
+    });
 </script>
 {% endblock %}

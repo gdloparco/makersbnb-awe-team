@@ -6,16 +6,14 @@
 {% endblock %}
 
 {% block content %}
-    <div class="menu">
+    <div class="menu properties-background">
         <div class="welcome">
             <h3>See our fabulous properties below!</h3>
         </div>
 
         {% for property in properties %}
         <div class="property">
-            <!-- <div class="property-image-container"> -->
                 <img class="property-image" src="/static/img/{{property.name}}.png" alt="castle">
-            <!-- </div> -->
             <div class="property-description">
                 <p>{{property.name}}</p>
                 <br>
