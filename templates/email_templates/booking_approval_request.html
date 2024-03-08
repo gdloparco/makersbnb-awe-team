@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{booker_username} wants to book your {property_name} property</title>
+    <link rel="stylesheet" href="static/style.css">
+
+<!--
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-approve {
+            background-color: #4CAF50;
+        }
+        .btn-deny {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+-->
+<body>
+    <div class="container">
+        <h2>Booking Request for {property_name}</h2>
+        <p>Hi {owner_username},</p>
+        <p>A booking request has been made for {property_name}. Please review the request details below:</p>
+        <ul>
+            <li><strong>Requested By:</strong>{booker_username}</li>
+            <li><strong>Check-in Date:</strong>{start_date}</li>
+            <li><strong>Check-out Date:</strong>{end_date}</li>
+            <li><strong>Total cost</strong>{total_cost}</li>
+        </ul>
+        
+        <p>Please take action on this request:</p>
+        <div>
+            <a href="http://localhost:5000/index" class="btn btn-approve">Approve Request</a>
+            <a href="http://localhost:5000/index" class="btn btn-deny">Deny Request</a>
+        </div>
+    </div>
+</body>
+</html>

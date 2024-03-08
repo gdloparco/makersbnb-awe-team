@@ -103,8 +103,24 @@ def book_property():
         # booking and the owner, and then redirect the user
         # to the 'success' page
         emailer = EmailManager()
-        emailer.send_email(f'{booker.email}', 'Your MakersBnB booking', f'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.\n\nYour booking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{new_booking_total_cost}')
-        emailer.send_email(f'{owner.email}', f'{booker.username} wants to book your {property.name} property', f'Someone wants to book your MakersBnB property! See the details below, and then approve or deny the request.\n\nBooking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{new_booking_total_cost}')
+        # First send a simple email to the requester
+        emailer.send_email(f'{booker.email}', 'Your MakersBnB booking', f'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.Your booking details:\nStart date: {start_date}End date: {end_date}Total cost: £{new_booking_total_cost}')
+        
+        # Now populate an HTML template and send it to the owner
+        with open('templates/email_templates/booking_approval_request.html', 'r') as file:
+            html_content = file.read()
+
+        # Replace placeholders in HTML content with actual values
+        html_content = html_content.format(
+            owner_username=owner.username,
+            booker_username=booker.username,
+            property_name=property.name,
+            start_date=start_date,
+            end_date=end_date,
+            total_cost=new_booking_total_cost
+        )
+
+        emailer.send_email(f'{owner.email}', f'{booker.username} wants to book your {property.name} property', html_content)
         return render_template('property_request_sent.html', new_booking=new_booking, new_booking_total_cost=new_booking_total_cost)
     else:
         return redirect('/log_in')

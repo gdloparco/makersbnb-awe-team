@@ -35,6 +35,7 @@ CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
+    approval VARCHAR(255),
     user_id INTEGER,
     CONSTRAINT fk_user FOREIGN KEY(user_id)
         REFERENCES users(id)
@@ -56,9 +57,9 @@ INSERT INTO properties (name, description, cost_per_night, user_id) VALUES ('Par
 INSERT INTO properties (name, description, cost_per_night, user_id) VALUES ('Astana', 'Yurt', 450, 1);
 INSERT INTO properties (name, description, cost_per_night, user_id) VALUES ('Jupiter', 'Space station', 1000, 4);
 
-INSERT INTO bookings (start_date, end_date, user_id, property_id) VALUES ('2024-05-04', '2024-05-04', 3, 2);
-INSERT INTO bookings (start_date, end_date, user_id, property_id) VALUES ('2024-05-04', '2024-05-09', 3, 3);
-INSERT INTO bookings (start_date, end_date, user_id, property_id) VALUES ('2024-05-10', '2024-06-10', 3, 3);
+INSERT INTO bookings (start_date, end_date, approval, user_id, property_id) VALUES ('2024-05-04', '2024-05-04', 'approved', 3, 2);
+INSERT INTO bookings (start_date, end_date, approval, user_id, property_id) VALUES ('2024-05-04', '2024-05-09', 'approved', 3, 3);
+INSERT INTO bookings (start_date, end_date, approval, user_id, property_id) VALUES ('2024-05-10', '2024-06-10', 'approved', 3, 3);
 
 
 
