@@ -16,4 +16,4 @@ def test_property_values_are_equal():
 
 def test_property_formats_appropriately():
     property = Property(1, 'London', 'Castle', 200, 2)
-    assert property.__repr__() == 'Property details: London, Castle, £200'
+    assert property.__repr__() == 'Property(1, London, Castle, 200, 2)'

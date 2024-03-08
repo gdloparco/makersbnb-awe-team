@@ -11,18 +11,23 @@
         <h3>You are looking at {{property.name}} booking details.</h3>
     </div>
     <div class="property">
-        <div>
             <img class="property-image" src="/static/img/{{property.name}}.png" alt="castle">
-        </div>
         <div class="property-description">
             <p><a class="property-name" href="/property_{{property.id}}">{{property.name}}</a></p>
             <br>
             <p>Description: {{property.description}}</p> 
             <br>
             <p>Cost per night: £{{property.cost_per_night}}</p>
+            <br>
+            <form action="/make_booking" method="POST">
+                <input type="hidden" name="property_id" value="{{ property.id }}">
+                <input type="hidden" name="owner_id" value="{{ property.user_id }}">
+                <button type="submit" class="make_booking_button">Book this property</button>
+            </form>
         </div>
     </div>
-    <a href="/property_list" class="submit">Back to all property listings</a>
-</div>
 
+    <a href="/property_list" class="submit">Back to all property listings</a>
+    
+</div>
 {% endblock %}
