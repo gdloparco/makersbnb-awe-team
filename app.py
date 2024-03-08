@@ -65,34 +65,49 @@ def get_property_request_success():
 
 @app.route('/make_booking', methods=['POST'])
 def book_property():
-    # Get the property_id from the webpage based on which
-    # property was being viewed
-    property_id = request.form.get('property_id')
-    # Set up the database connection and repositories
-    # to save the booking to the database and access
-    # owner / user info
-    connection = get_flask_database_connection(app)
-    booking_repository = BookingRepository(connection)
-    property_repository = PropertyRepository(connection)
-    user_repository = UserRepository(connection)
-    start_date = '2025-01-01'
-    end_date = '2025-02-01'
-    total_cost = '500'
-    # Get the relevant information to make the booking
-    # and send the confirmation
-    property = property_repository.find(property_id)
-    owner_id = property.user_id
-    owner = user_repository.find_by_id(owner_id)
-    # Create the booking in the bookings table
-    new_booking = Booking(0, start_date, end_date, 1, property_id)
-    booking_repository.create(new_booking)
-    # Send email confirmations to the user who made the
-    # booking and the owner, and then redirect the user
-    # to the 'success' page
-    emailer = EmailManager()
-    emailer.send_email('series4000kryten@gmail.com', 'Your MakersBnB booking', f'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.\n\nYour booking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{total_cost}')
-    emailer.send_email(owner.email, 'Someone wants to book your MakersBnB property', f'Someone wants to book your MakersBnB property! See the details below, and then approve or deny the request.\n\nBooking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{total_cost}')
-    return redirect('/property_request_sent')
+    # Check if the user is logged in
+    if 'username' in session:
+        # Set up the database connection and repositories
+        # to save the booking to the database and access
+        # owner / user info
+        connection = get_flask_database_connection(app)
+        booking_repository = BookingRepository(connection)
+        property_repository = PropertyRepository(connection)
+        user_repository = UserRepository(connection)
+        # Get the property_id from the webpage based on which
+        # property was being viewed, and the dates requested
+        property_id = request.form.get('property_id')
+        start_day = request.form.get('start_day')
+        start_month = request.form.get('start_month')
+        start_year = request.form.get('start_year')
+        end_day = request.form.get('end_day')
+        end_month = request.form.get('end_month')
+        end_year = request.form.get('end_year')
+        # Set the username as the logged in user's
+        # and get their id
+        username = session['username']
+        booker = user_repository.find(username)
+        # Get the relevant information to make the booking
+        # and send the confirmation
+        property = property_repository.find(property_id)
+        owner_id = property.user_id
+        owner = user_repository.find_by_id(owner_id)
+        start_date = f'{start_year}-{start_month}-{start_day}'
+        end_date = f'{end_year}-{end_month}-{end_day}'
+        # Create the booking in the bookings table and
+        # get the total cost
+        new_booking = Booking(0, start_date, end_date, booker.id, property_id)
+        booking_repository.create(new_booking)
+        new_booking_total_cost = 'STAND IN INFORMATION' #booking_repository.total_cost(new_booking)
+        # Send email confirmations to the user who made the
+        # booking and the owner, and then redirect the user
+        # to the 'success' page
+        emailer = EmailManager()
+        emailer.send_email(f'{booker.email}', 'Your MakersBnB booking', f'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.\n\nYour booking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{new_booking_total_cost}')
+        emailer.send_email(f'{owner.email}', f'{booker.username} wants to book your {property.name} property', f'Someone wants to book your MakersBnB property! See the details below, and then approve or deny the request.\n\nBooking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{new_booking_total_cost}')
+        return render_template('property_request_sent.html', new_booking=new_booking, new_booking_total_cost=new_booking_total_cost)
+    else:
+        return redirect('/log_in')
 
 # CREATE USER
 @app.route('/create_user')
@@ -128,21 +143,25 @@ def get_create_property():
 
 @app.route('/create_property', methods=['POST'])
 def post_create_property():
-    connection = get_flask_database_connection(app)
-    repository = PropertyRepository(connection)
-    name = request.form['name']
-    description = request.form['description']
-    cost_per_night = request.form['cost_per_night']
-    username = request.form['username']
-    user_repository = UserRepository(connection)
-    user = user_repository.find(username)
-    property = Property(0, name, description, cost_per_night, user.id)
-    validator = PropertyParametersValidator(name, description, cost_per_night)
-    if not validator.is_valid():
-        return render_template('create_property.html', errors=validator.generate_errors()), 400
+    # Check if the user is logged in
+    if 'username' in session:
+        connection = get_flask_database_connection(app)
+        repository = PropertyRepository(connection)
+        name = request.form['name']
+        description = request.form['description']
+        cost_per_night = request.form['cost_per_night']
+        username = session['username']
+        user_repository = UserRepository(connection)
+        user = user_repository.find(username)
+        property = Property(0, name, description, cost_per_night, user.id)
+        validator = PropertyParametersValidator(name, description, cost_per_night)
+        if not validator.is_valid():
+            return render_template('create_property.html', errors=validator.generate_errors()), 400
+        else:
+            property = repository.create(property)
+        return redirect('/property_list')
     else:
-        property = repository.create(property)
-    return redirect('/property_list')
+        return redirect('/log_in')
 
 #  Log In
 @app.route('/log_in')
@@ -200,6 +219,89 @@ def logout():
 
     # Redirect to the login page (or any other desired page)
     return redirect(url_for('get_index'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# get page user details
+@app.route('/user_<username>', methods=['GET'])
+def get_user_details(username):
+    connection = get_flask_database_connection(app)
+    user_repo = UserRepository(connection)
+    properties = user_repo.find_properties_by_username(username)
+    if 'username' in session:
+        username = session['username']
+        return render_template('user_profile.html', username = username, properties = properties)
+    return render_template('user_profile.html', username = username)
+
+
+# GET /property
+# Returns the property with the supplied name as HTML
+# Try it:
+#   ; open http://localhost:5001/property_{{id}}
+# @app.route('/property_<int:id>', methods=['GET'])
+# def get_property(id):
+#     connection = get_flask_database_connection(app)
+#     repository = PropertyRepository(connection)
+#     property = repository.find(id)
+#     if 'username' in session:
+#         username = session['username']
+#         return render_template('property_id.html', username = username, property = property)
+#     # We use `render_template` to send the user the file `property_id.html`
+#     return render_template('property_id.html', property=property)
 
 
 

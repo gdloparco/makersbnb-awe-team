@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block content %}
-    <p>Booking request sent!</p>
-    <br>
-    <a href="/index"><p>Back to homepage</p></a>
+<div class="booking_confirmation">
+    <p>Booking request sent!</p><br>
+    <p>Your booking details</p><br>
+    <p>Start date: {{new_booking.start_date}}</p><br>
+    <p>End date: {{new_booking.end_date}}</p><br>
+    <p>Total cost: £{{new_booking_total_cost}}</p>
+</div>
 {% endblock %}

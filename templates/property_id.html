@@ -22,6 +22,14 @@
             <form action="/make_booking" method="POST">
                 <input type="hidden" name="property_id" value="{{ property.id }}">
                 <input type="hidden" name="owner_id" value="{{ property.user_id }}">
+                <p>Check in date: </p>
+                <input placeholder="DD" class="input" type="text" name="start_day">
+                <input placeholder="MM" class="input" type="text" name="start_month">
+                <input placeholder="YYYY" class="input" type="text" name="start_year">
+                <br><p>Check out date: </p>
+                <input placeholder="DD" class="input" type="text" name="end_day">
+                <input placeholder="MM" class="input" type="text" name="end_month">
+                <input placeholder="YYYY" class="input" type="text" name="end_year">
                 <button type="submit" class="make_booking_button">Book this property</button>
             </form>
         </div>
