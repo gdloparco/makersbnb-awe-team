@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, redirect, session, url_for
+from flask import Flask, request, render_template, redirect, session, url_for, jsonify
 from lib.database_connection import get_flask_database_connection
 from lib.user_repository import UserRepository
 from lib.user import User
@@ -63,6 +63,12 @@ def get_property(id):
 def get_property_request_success():
     return render_template('property_request_sent.html')
 
+from flask import request, redirect, render_template, session
+from lib.booking import Booking
+from lib.booking_repository import BookingRepository
+from lib.property_repository import PropertyRepository
+from lib.user_repository import UserRepository
+
 @app.route('/make_booking', methods=['POST'])
 def book_property():
     # Check if the user is logged in
@@ -74,17 +80,16 @@ def book_property():
         booking_repository = BookingRepository(connection)
         property_repository = PropertyRepository(connection)
         user_repository = UserRepository(connection)
+        
         # Get the property_id from the webpage based on which
-        # property was being viewed, and the dates requested
+        # property was being viewed
         property_id = request.form.get('property_id')
-        start_day = request.form.get('start_day')
-        start_month = request.form.get('start_month')
-        start_year = request.form.get('start_year')
-        end_day = request.form.get('end_day')
-        end_month = request.form.get('end_month')
-        end_year = request.form.get('end_year')
-        # Set the username as the logged in user's
-        # and get their id
+        
+        # Get the start and end dates from the form inputs
+        start_date = request.form.get('start_day')
+        end_date = request.form.get('end_day')
+        
+        # Get the logged-in user's id
         username = session['username']
         booker = user_repository.find(username)
         # Get the relevant information to make the booking
@@ -92,13 +97,15 @@ def book_property():
         property = property_repository.find(property_id)
         owner_id = property.user_id
         owner = user_repository.find_by_id(owner_id)
-        start_date = f'{start_year}-{start_month}-{start_day}'
-        end_date = f'{end_year}-{end_month}-{end_day}'
         # Create the booking in the bookings table and
         # get the total cost
-        new_booking = Booking(0, start_date, end_date, booker.id, property_id)
-        booking_repository.create(new_booking)
-        new_booking_total_cost = 'STAND IN INFORMATION' #booking_repository.total_cost(new_booking)
+        new_booking = Booking(id=0, start_date=start_date, end_date=end_date,
+                                user_id=booker.id, property_id=property_id)
+        new_booking_total_cost = new_booking.total_cost(property.cost_per_night) #booking_repository.total_cost(new_booking)
+        try:
+            booking_repository.create(new_booking)
+        except Exception as e:
+            return render_template('error.html', error_message=str(e))
         # Send email confirmations to the user who made the
         # booking and the owner, and then redirect the user
         # to the 'success' page
@@ -107,7 +114,9 @@ def book_property():
         emailer.send_email(f'{owner.email}', f'{booker.username} wants to book your {property.name} property', f'Someone wants to book your MakersBnB property! See the details below, and then approve or deny the request.\n\nBooking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{new_booking_total_cost}')
         return render_template('property_request_sent.html', new_booking=new_booking, new_booking_total_cost=new_booking_total_cost)
     else:
+        # If the user is not logged in, redirect them to the login page
         return redirect('/log_in')
+
 
 # CREATE USER
 @app.route('/create_user')
