@@ -27,9 +27,10 @@ header {
     align-items: center;
 }
 
-.logo-container {
+.logo_container {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .logo {
@@ -174,3 +175,7 @@ footer {
     flex-direction: column;
 
 } 
+
+.index-image {
+    max-width: 70%;
+}

@@ -12,6 +12,8 @@
         <div class="welcome">
             <h3>Welcome to MakersBnB, the fastest growing property hire app in the world!</h3>
         </div>
+        <img class="index-image" src="" alt="index-image">
+        <br>
         <div class="menu-intro">
             Welcome to MakersBnB, the premier destination for exceptional property rentals!
             <br> 
@@ -25,3 +27,16 @@
     </div>
 {% endblock %}
 
+{% block scripts %}
+<script>
+    fetch("https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=landscape+house")
+        .then(response => response.json())
+        .then(data => {
+            var fullImageUrl = data.urls.full;
+            document.querySelector('.index-image').src = fullImageUrl;
+        })
+        .catch(error => {
+            console.error('Error fetching image:', error);
+        });
+</script>
+{% endblock %}
