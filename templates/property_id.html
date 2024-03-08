@@ -25,6 +25,11 @@
             <br>
             <p>Cost per night: £{{property.cost_per_night}}</p>
             <br>
+            {% for booking in bookings %}
+                <p>Booking start date: {{ booking.start_date }}</p>
+                <p>Booking end date: {{ booking.end_date }}</p>
+            {% endfor %}
+            <br>
             <form action="/make_booking" method="POST">
                 <input type="hidden" name="property_id" value="{{ property.id }}">
                 <input type="hidden" name="owner_id" value="{{ property.user_id }}">

@@ -51,9 +51,12 @@ def get_property(id):
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = repository.find(id)
+    booking_repo = BookingRepository(connection)
+    bookings = booking_repo.find_bookings_by_property_id_returns_bookings(id)
+    print(bookings)
     if 'username' in session:
         username = session['username']
-        return render_template('property_id.html', username = username, property = property)
+        return render_template('property_id.html', username = username, property = property, bookings = bookings)
     # We use `render_template` to send the user the file `property_id.html`
     return render_template('property_id.html', property=property)
 
@@ -321,20 +324,7 @@ def get_user_details(username):
 
 
 
-@app.route('/calendar')
-def get_calendar():
-    connection = get_flask_database_connection(app)
-    repository = PropertyRepository(connection)
 
-    return render_template('calendar.html')
-
-@app.route('/property_<int:id>_calendar')
-def get_property_calendar(id):
-    connection = get_flask_database_connection(app)
-    repository = PropertyRepository(connection)
-    property = repository.find(id)
-    # We use `render_template` to send the user the file `property_id.html`
-    return render_template('property_id_calendar.html', property=property)
 
 
 

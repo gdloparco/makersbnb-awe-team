@@ -21,10 +21,25 @@ class BookingRepository:
         for row in rows:
                 booking = Booking(row["booking_id"], row["start_date"], row["end_date"], row["booking_user_id"],row["property_id"] )
                 bookings.append(booking)
-        print(booking)
             # Each row has the same id, property_id, and email, , and email, , so we just use the first
         return Property(rows[0]["property_id"], rows[0]["name"], rows[0]["description"], rows[0]["cost_per_night"], rows[0]["property_user_id"], bookings)
         
+
+    def find_bookings_by_property_id_returns_bookings(self, property_id):
+        rows = self._connection.execute(
+        "SELECT bookings.id AS booking_id, bookings.property_id AS booking_property_id, bookings.start_date, bookings.end_date, bookings.user_id AS booking_user_id, properties.id AS property_id, properties.name, properties.description, properties.cost_per_night, properties.user_id AS property_user_id "
+        "FROM properties JOIN bookings ON properties.id = bookings.property_id "
+        "WHERE bookings.property_id = %s", [property_id])
+            
+        bookings = []
+            
+        for row in rows:
+                booking = Booking(row["booking_id"], row["start_date"], row["end_date"], row["booking_user_id"],row["property_id"] )
+                bookings.append(booking)
+            # Each row has the same id, property_id, and email, , and email, , so we just use the first
+        return bookings
+        
+
 
     # Find all bookings from a specific user
     def find_bookings_by_user(self, user_id):
