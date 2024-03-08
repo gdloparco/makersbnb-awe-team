@@ -14,7 +14,7 @@
         {% for property in properties %}
         <div class="property">
             <div class="property-image-container">
-                <img class="property-image" src="" alt="castle" data-property-name="{{property.name}}">
+                <img class="property-image" src="/static/img/{{property.name}}.png" alt="castle">
             </div>
             <div class="property-description">
                 <p>{{property.name}}</p>
@@ -27,23 +27,4 @@
         </div>
         {% endfor %}
     </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll('.property-image').forEach(img => {
-            var propertyName = img.getAttribute('data-property-name');
-            fetch("https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=house+" + encodeURIComponent(propertyName))
-                .then(response => response.json())
-                .then(data => {
-                    var smallImageUrl = data.urls.small;
-                    img.src = smallImageUrl;
-                })
-                .catch(error => {
-                    console.error('Error fetching image:', error);
-                });
-        });
-    });
-</script>
 {% endblock %}
