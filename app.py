@@ -97,8 +97,8 @@ def book_property():
         # Create the booking in the bookings table and
         # get the total cost
         new_booking = Booking(0, start_date, end_date, booker.id, property_id)
+        new_booking_total_cost = new_booking.total_cost(property.cost_per_night) #booking_repository.total_cost(new_booking)
         booking_repository.create(new_booking)
-        new_booking_total_cost = 'STAND IN INFORMATION' #booking_repository.total_cost(new_booking)
         # Send email confirmations to the user who made the
         # booking and the owner, and then redirect the user
         # to the 'success' page
