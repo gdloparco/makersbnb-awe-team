@@ -97,8 +97,6 @@ def book_property():
         property = property_repository.find(property_id)
         owner_id = property.user_id
         owner = user_repository.find_by_id(owner_id)
-        start_date = f'{start_year}-{start_month}-{start_day}'
-        end_date = f'{end_year}-{end_month}-{end_day}'
         # Create the booking in the bookings table and
         # get the total cost
         new_booking = Booking(id=0, start_date=start_date, end_date=end_date,
