@@ -206,7 +206,7 @@ def post_log_in():
 
     if not validator.login_is_valid():
         # Handle invalid input
-        return render_template('log_in.html', errors=[validator.generate_errors()])
+        return render_template('log_in.html', errors=validator.generate_errors())
 
     # Validate credentials and retrieve the user
     user = repository.find_by_email(email)

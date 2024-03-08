@@ -1,51 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/style.css') }}">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VenBNB</title>
-    <link rel="icon" type="image/x-icon" href="/static/img/apple-touch-icon.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-    <title>{% block title %}VenBNB{% endblock %}</title>
-    {% block styles %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/style.css') }}">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>VenBNB</title>
+        <link rel="icon" type="image/x-icon" href="/static/img/apple-touch-icon.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+        <title>{% block title %}VenBNB{% endblock %}</title>
+        {% block styles %}{% endblock %}
 </head>
-<div class="container">
-    <header>
-        <div class="header">
-            <div class="logo-container">
-                <div><a href="/index"><img class="logo" src="/static/img/Logo.png" alt="logo"></a></div>
-                <div><a href="/index"><h3>VenBNB</h3></a></div>
-            </div>
-            <a href="/property_list">See properties</a>
-            <a href="/create_property">List your property</a>
-            {% if username %}
-                <div>
-                    <a href="/user_{{ username }}">{{session['username']}}</a> |
-                    <a href="/logout">Log out</a>
+<body>
+        <header>
+            <div class="header">
+                <div class="logo-container">
+                    <div><a href="/index"><img class="logo" src="/static/img/Logo.png" alt="logo"></a></div>
+                    <div><a href="/index"><h3>VenBNB</h3></a></div>
                 </div>
+                <a href="/property_list">See properties</a>
+                <a href="/create_property">List your property</a>
+                {% if username %}
+                    <div>
+                        <a href="/user_{{ username }}">{{session['username']}}</a> |
+                        <a href="/logout">Log out</a>
+                    </div>
+                    {% endif %}
+                    {% if not username %}
+                    <div>
+                        <a href="/create_user">Sign up</a> |
+                        <a href="/log_in">Log in</a>
+                    </div>
                 {% endif %}
-                {% if not username %}
-                <div>
-                    <a href="/create_user">Sign up</a> |
-                    <a href="/log_in">Log in</a>
-                </div>
-            {% endif %}
-        </div>
-        
-    </header>
-    <body>
+            </div>
+            
+        </header>
         {% block content %}{% endblock %}
         {% block scripts %}{% endblock %}
-    </body>
-    
-    <footer class="footer">
-        <div class="socials"><a target="_blank" href="https://www.youtube.com/watch?v=BoKQ6991WL8">@TeamVenera</a></div>
         
-        <div class="socials-container">
-        <a target="_blank" href="https://www.facebook.com/eminem/?locale=en_GB"><img class="socials" src="/static/img/icons8-facebook-50.png" alt="facebook"></a> 
-        <a target="_blank" href="https://web.telegram.org/a/#-1001251423978"><img class="socials" src="/static/img/icons8-telegram-50.png" alt="telegram"></a> 
-        <a target="_blank" href="https://www.instagram.com/eminem/?hl=en"><img class="socials" src="/static/img/icons8-instagram-50.png" alt="instagram"></div></a> 
-    </footer>
-</div>
+        <footer class="footer">
+            <div class="socials"><a target="_blank" href="https://www.youtube.com/watch?v=BoKQ6991WL8">@TeamVenera</a></div>
+            
+            <div class="socials-container">
+            <a target="_blank" href="https://www.facebook.com/eminem/?locale=en_GB"><img class="socials" src="/static/img/icons8-facebook-50.png" alt="facebook"></a> 
+            <a target="_blank" href="https://web.telegram.org/a/#-1001251423978"><img class="socials" src="/static/img/icons8-telegram-50.png" alt="telegram"></a> 
+            <a target="_blank" href="https://www.instagram.com/eminem/?hl=en"><img class="socials" src="/static/img/icons8-instagram-50.png" alt="instagram"></div></a> 
+        </footer>
+</body>
 </html>

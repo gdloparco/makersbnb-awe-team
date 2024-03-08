@@ -7,15 +7,15 @@
 
 {% block content %}
 
-<br>
-<br>
-<h4 class="error-message">{{ error_message }}</h4>
-<br>
-<br>
-<br>
-<a href="/property_list" class="submit back-to-prop">Back to all property listings</a>
-<br>
-<br>
-<br>
+<div class="booking-rejection-container">
+    <div class="booking-message">
+        <h4 class="error-message">{{ error_message }}</h4>
+
+        <a href="/property_list" class="back-to-prop-from-denied-request">Back to all property listings</a>
+    </div>
+
+</div>
+
+
 
 {% endblock %}
