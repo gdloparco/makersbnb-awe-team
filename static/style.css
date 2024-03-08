@@ -14,19 +14,28 @@ html, body {
     flex-direction: column;
 }
 
-body {
-    line-height: 1;
-}
-
 header {
     background-color: #373F51;
     width: 100%;
 }
 
 .header {
+    height: 70px;
     display: flex;
     justify-content: space-between;
     padding: 20px;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: auto;
+    width: 70px;
+    margin-right: 10px;
 }
 
 a {
@@ -54,13 +63,16 @@ a {
 }
 
 .property {
-    width: 50%;
-    max-height: 13em;
+    width: 60%;
+    min-width: 20%;
+    max-height: 15em;
+    min-height: 10em;
     display: flex;
     align-items: center;
     background-color: #A9BCD0;
     border-radius: 15px;
     margin: 20px;
+
 }
 
 .property:hover {
@@ -68,19 +80,18 @@ a {
 }
 
 .property-image {
-    width: 70%;
-    max-height: 13em;
-    height: auto;
+    max-width: 50%;
+    height: 13em;
     object-fit: cover;
     position: left;
     border-radius: 15px;
 }
 
 .property-description {
-    width: 40%;
-    padding: 10px;
+    width: 55%;
+    padding: 15px;
     align-items: left;
-    font-size: 24px;
+    font-size: 22px;
 }
 
 .property-name {
@@ -162,4 +173,4 @@ footer {
     display: flex;
     flex-direction: column;
 
-}
+} 

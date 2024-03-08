@@ -11,7 +11,10 @@
 <div class="container">
     <header>
         <div class="header">
-            <a href="/index"><h1>MakersBnB</h1></a>
+            <div class="logo_container">
+                <div><a href="/index"><img class="logo" src="/static/img/Logo.png" alt="logo"></a></div>
+                <div><a href="/index"><h3>MakersBnB</h3></a></div>
+            </div>
             <a href="/property_list">See properties</a>
             <a href="/create_property">List your property</a>
             {% if username %}
@@ -33,6 +36,7 @@
         {% block content %}{% endblock %}
         {% block scripts %}{% endblock %}
     </body>
+    
     <footer class="footer">@TeamVenera</footer>
 </div>
 
