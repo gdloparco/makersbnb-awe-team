@@ -92,20 +92,29 @@ def book_property():
         # Get the logged-in user's id
         username = session['username']
         booker = user_repository.find(username)
-        
-        # Create the booking instance
+        # Get the relevant information to make the booking
+        # and send the confirmation
+        property = property_repository.find(property_id)
+        owner_id = property.user_id
+        owner = user_repository.find_by_id(owner_id)
+        start_date = f'{start_year}-{start_month}-{start_day}'
+        end_date = f'{end_year}-{end_month}-{end_day}'
+        # Create the booking in the bookings table and
+        # get the total cost
         new_booking = Booking(id=0, start_date=start_date, end_date=end_date,
                                 user_id=booker.id, property_id=property_id)
-        
-        # Save the booking to the database
+        new_booking_total_cost = new_booking.total_cost(property.cost_per_night) #booking_repository.total_cost(new_booking)
         try:
             booking_repository.create(new_booking)
         except Exception as e:
             return render_template('error.html', error_message=str(e))
-        
-        # Redirect the user to the booking confirmation page
-        return render_template('property_request_sent.html', new_booking=new_booking)
-    
+        # Send email confirmations to the user who made the
+        # booking and the owner, and then redirect the user
+        # to the 'success' page
+        emailer = EmailManager()
+        emailer.send_email(f'{booker.email}', 'Your MakersBnB booking', f'Thank you for booking through MakersBnB. Your request has been sent to the property host, who will be in touch soon.\n\nYour booking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{new_booking_total_cost}')
+        emailer.send_email(f'{owner.email}', f'{booker.username} wants to book your {property.name} property', f'Someone wants to book your MakersBnB property! See the details below, and then approve or deny the request.\n\nBooking details:\nStart date: {start_date}\nEnd date: {end_date}\nTotal cost: £{new_booking_total_cost}')
+        return render_template('property_request_sent.html', new_booking=new_booking, new_booking_total_cost=new_booking_total_cost)
     else:
         # If the user is not logged in, redirect them to the login page
         return redirect('/log_in')
