@@ -8,7 +8,7 @@
 {% block content %}
 
     <form action="/create_property" method="POST">
-            <div class="menu">
+            <div class="create-property-container">
                 {% if errors %}
                     <p class="errors">
                         There were errors with your submission: {{errors}}
@@ -19,11 +19,11 @@
                 </div>
     
                 <div class="inputs">
-                    <input placeholder="name of the property" class="input" type="text" name="name">
+                    <input placeholder="Name of the property" class="input" type="text" name="name">
                     <br>
-                    <input placeholder="description" class="input" type="text" name="description">
+                    <input placeholder="Description" class="input" type="text" name="description">
                     <br>
-                    <input placeholder="cost per night" class="input" type="number" name="cost_per_night">
+                    <input placeholder="Cost per night" class="input" type="number" name="cost_per_night">
                     <br>
                     <input class="submit" type="submit" value="List my property">
                 </div>

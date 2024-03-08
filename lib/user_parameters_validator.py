@@ -11,7 +11,6 @@ class UserParametersValidator:
         self.email = email
         self.password = password
         self.phone = phone
-        self.errors = []
 
     def is_valid(self):
         return self._is_username_valid() and  self._is_email_valid() and self._is_phone_valid()
@@ -33,19 +32,20 @@ class UserParametersValidator:
 
 
     def generate_errors(self):
+        errors = []
         connection = get_flask_database_connection(app)
         repository = UserRepository(connection)
         users = repository.all()
         if self.username in [user.username for user in users]:
-            self.errors.append("username already exists")
+            errors.append("username already exists")
         if not self._is_username_valid():
-            self.errors.append("username must not be blank")
+            errors.append("username must not be blank")
         if not self._is_email_valid():
-            self.errors.append("email must not be blank")
+            errors.append("email must not be blank")
         if not self._is_phone_valid():
-            self.errors.append("phone must not be blank")
-        self.errors = ", ".join(self.errors)
-        return self.errors
+            errors.append("phone must not be blank")
+        errors = ", ".join(errors)
+        return errors
     
     def get_valid_username(self):
         if not self._is_username_valid():

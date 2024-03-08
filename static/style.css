@@ -6,7 +6,7 @@
     border: 0;
 }
 
-html, body {
+body {
     font-size: 20px;
     width: 100%;
     height: 100%;
@@ -17,7 +17,7 @@ html, body {
 }
 
 header {
-    background-color: #373F51;
+    background-color: #3a404d;
     width: 100%;
 }
 
@@ -54,6 +54,107 @@ a {
     align-items: center;
     justify-content: space-between;
     background-color: aliceblue;
+}
+
+.errors, .password-errors {
+    width: 30%;
+    margin-bottom: 10px;
+}
+
+.create-property-container {
+    background-image: url("/static/img/david-van-dijk-3LTht2nxd34-unsplash.jpg");
+    background-size: cover;
+    width: 100%;
+    min-height: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.log-in-container {
+    background-image: url("/static/img/minh-pham-7pCFUybP_P8-unsplash.jpg");
+    background-size: cover;
+    width: 100%;
+    min-height: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create-user-container {
+    background-image: url("/static/img/driftime-4ifGPw7n5Qs-unsplash.jpg");
+    background-size: cover;
+    width: 100%;
+    min-height: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create-user-container h3 {
+    color: rgb(213, 213, 213);
+}
+
+.user-account-container {
+    background-image: url("/static/img/lauren-mancke-DpphPG9ENsI-unsplash.jpg");
+    background-size: cover;
+    width: 100%;
+    min-height: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-account-container h3 {
+    margin-top: 5%;
+}
+
+.book-property-container {
+    background-image: url("/static/img/ambitious-studio-rick-barrett-3kGO5krcNsM-unsplash.jpg");
+    background-size: cover;
+    width: 100%;
+    min-height: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book-property-container h3 {
+    color: white;
+}
+
+.booking-rejection-container {
+    background-image: url("/static/img/ambitious-studio-rick-barrett-3kGO5krcNsM-unsplash.jpg");
+    background-size: cover;
+    width: 100%;
+    min-height: 900px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+}
+
+.booking-confirmation {
+    padding: 20px;
+    text-align: center;
+    height: 17em;
+    width: 13em;
+    background-color: white;
+    opacity: 0.7;
+    border-radius: 7px;
+}
+
+.booking-message {
+    height: 17em;
+    width: 15em;
+    background-color: white;
+    padding: 20px;
+    opacity: 0.8;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .background {
@@ -132,6 +233,27 @@ a {
     opacity: 0.7;
 }
 
+.book-property {
+    width: 60%;
+    min-width: 20%;
+    max-height: 20em;
+    min-height: 10em;
+    display: flex;
+    align-items: center;
+    background-color: #ced4db;
+    border-radius: 15px;
+    margin: 30px;
+    opacity: 0.7;
+}
+
+.book-property img {
+    max-width: 50%;
+    height: 20em;
+    object-fit: cover;
+    position: left;
+    border-radius: 15px;
+}
+
 .properties-background {
     background-image: url("/static/img/augustine-wong-T0BYurbDK_M-unsplash.jpg");
     background-size: cover;
@@ -145,7 +267,7 @@ a {
 
 .property-image {
     max-width: 50%;
-    height: 13em;
+    max-height: 13em;
     object-fit: cover;
     position: left;
     border-radius: 15px;
@@ -153,10 +275,11 @@ a {
 
 .property-description {
     width: 55%;
-    padding: 15px;
+    padding: 17px;
     justify-content: space-around;
     font-size: 22px;
     display: flex;
+    flex-direction: column;
 }
 
 .property-details-container {
@@ -166,10 +289,6 @@ a {
 
 .dates-booking-container {
     display: block;
-}
-
-.property-name {
-    font-weight: bold;
 }
 
 .inputs {
@@ -187,12 +306,13 @@ a {
 }
 
 .input {
-    background-color: #373F51;
-    width: 60%;
-    padding: 10px;
+    background-color: #fefefe;
+    width: 30%;
+    padding: 14px;
     border-radius: 5px;
     margin: 0.6em;
-    color: white;
+    color: rgb(43, 43, 43);
+    border: 1px solid gray;
 }
 
 .description {
@@ -205,27 +325,54 @@ a {
 .submit {
     margin-top: 10px;
     width: 32%;
-    padding: 10px;
+    padding: 14px;
     border-radius: 5px;
-    background-color: rgb(168, 167, 167);
+    background-color: rgb(139, 139, 139);
     text-align: center;
+    border: 1px solid gray;
+}
+
+.back-to-prop {
+    margin-top: 10px;
+    width: 32%;
+    padding: 14px;
+    border-radius: 5px;
+    background-color: rgb(139, 139, 139);
+    text-align: center;
+    border: 1px solid gray;
+}
+
+.back-to-prop-from-denied-request {
+    margin-top: 10px;
+    width: 90%;
+    padding: 14px;
+    border-radius: 5px;
+    background-color: rgb(139, 139, 139);
+    text-align: center;
+    border: 1px solid gray;
+}
 }
 
 .submit:hover {
-    background-color: rgb(207, 206, 206);
+    background-color: rgb(149, 149, 149);
 }
 
 .checkbox {
+    opacity: 0.6;
     display: flex;
     flex-direction: row;
     padding-left: 20px;
     color: rgb(84, 84, 84);
     font-size: 14px;
-    width: 32%;
+    width: 10%;
+    border-radius: 5px;
+    margin-left: 5px;
+    background-color: #ffffff;
+    padding: 10px;
 }
 
 .show-password {
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .t-property-name {
@@ -250,9 +397,8 @@ footer {
     bottom: 0;
     width: 100%;
     height: 50px;
-    text-align: left;
     padding: 10px 0;
-    background-color: #373F51;
+    background-color: #3a404d;;
 }
 
 .socials-container {
@@ -264,9 +410,3 @@ footer {
     height: 30px;
     margin: 15px;
 }
-
-.continer {
-    display: flex;
-    flex-direction: column;
-
-} 

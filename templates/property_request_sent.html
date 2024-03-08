@@ -6,11 +6,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="booking_confirmation">
-    <p>Booking request sent!</p><br>
-    <p>Your booking details</p><br>
-    <p>Start date: {{new_booking.start_date}}</p><br>
-    <p>End date: {{new_booking.end_date}}</p><br>
-    <p>Total cost: £{{new_booking_total_cost}}</p>
+<div class="booking-rejection-container">
+    <div class="booking-confirmation">
+        <p>Booking request sent!</p><br>
+        <p>Your booking details</p><br>
+        <p>Start date: {{new_booking.start_date}}</p><br>
+        <p>End date: {{new_booking.end_date}}</p><br>
+        <p>Total cost: £{{new_booking_total_cost}}</p>
+    </div>
+
 </div>
-{% endblock %}
+{% endblock %} 
