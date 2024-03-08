@@ -91,18 +91,8 @@ a {
 .property-description {
     width: 55%;
     padding: 15px;
-    justify-content: space-around;
+    align-items: left;
     font-size: 22px;
-    display: flex;
-}
-
-.property-details-container {
-    display: block;
-    margin: auto 0;
-}
-
-.dates-booking-container {
-    display: block;
 }
 
 .property-name {
@@ -116,20 +106,11 @@ a {
     width: 100%;
 }
 
-.make-booking-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
 .input {
-    background-color: #373F51;
-    width: 60%;
+    background-color: #DAA49A;
+    width: 30%;
     padding: 10px;
     border-radius: 5px;
-    margin: 0.6em;
-    color: white;
 }
 
 .description {
@@ -145,7 +126,6 @@ a {
     padding: 10px;
     border-radius: 5px;
     background-color: rgb(168, 167, 167);
-    text-align: center;
 }
 
 .submit:hover {

@@ -100,10 +100,9 @@ class BookingRepository:
         result = self._connection.execute(query, [booking.property_id, booking.end_date, booking.start_date])
         overlap = result[0].get('count')
 
-        if booking.end_date < booking.start_date:
-            raise Exception("You want your holidays to end before they start? Is your job really that good?")
-        elif not overlap:
+        if not overlap:
             self._connection.execute('INSERT INTO bookings (start_date, end_date, user_id, property_id) VALUES (%s, %s, %s, %s)', [booking.start_date, booking.end_date, booking.user_id, booking.property_id])
             return None
-        elif overlap:
+        else:
             raise Exception("Selected period for booking unavailable, try other dates.")
+    
