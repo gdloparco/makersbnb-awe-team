@@ -37,9 +37,9 @@ It is not valid
 """
 def test_is_not_valid_with_invalid_password():
     validator_1 = UserParametersValidator("Andregois", "andre@fmail.com", "", "074747312")
-    assert validator_1.is_valid() == False
+    assert validator_1.is_password_valid() == False
     validator_2 = UserParametersValidator("Andregois", "andre@fmail.com", None, "074747312")
-    assert validator_2.is_valid() == False
+    assert validator_2.is_password_valid() == False
 
 """
 With A blank or None phone
@@ -59,12 +59,14 @@ Produces errors
 def test_generate_errors():
     validator_1 = UserParametersValidator("", "", "andre123", "074747312")
     assert validator_1.generate_errors() == "username must not be blank, email must not be blank"
+    assert validator_1.generate_password_errors() == "Password must be minimum 8 characters long and contain one of the following: '!@$%&'"
 
     validator_2 = UserParametersValidator("", "", "", "")
     assert validator_2.generate_errors() == "username must not be blank, email must not be blank, password must not be blank, phone must not be blank"
+    assert validator_2.generate_password_errors() == "Password must be minimum 8 characters long and contain one of the following: '!@$%&'"
     
     validator_3 = UserParametersValidator("Andregois", "andre@fmail.com", "", "")
-    assert validator_3.generate_errors() == "password must not be blank, phone must not be blank"
+    assert validator_3.generate_errors() == "phone must not be blank"
 
 
 def test_get_valid_username_if_username_valid():
