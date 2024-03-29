@@ -7,27 +7,29 @@
 
 {% block content %}
 
-    <form action="/create_property" method="POST">
-            <div class="create-property-container">
-                {% if errors %}
-                    <p class="errors">
-                        There were errors with your submission: {{errors}}
-                    </p>
-                {% endif %}
-                <div class="welcome">
-                    <h3>List a property</h3>
-                </div>
-    
-                <div class="inputs">
-                    <input placeholder="Name of the property" class="input" type="text" name="name">
-                    <br>
-                    <input placeholder="Description" class="input" type="text" name="description">
-                    <br>
-                    <input placeholder="Cost per night" class="input" type="number" name="cost_per_night">
-                    <br>
-                    <input class="submit" type="submit" value="List my property">
-                </div>
-            </div>   
-    </form>
-    
+<form action="/create_property" method="POST" enctype="multipart/form-data">
+    <div class="create-property-container">
+        {% if errors %}
+        <p class="errors">
+            There were errors with your submission: {{errors}}
+        </p>
+        {% endif %}
+        <div class="welcome">
+            <h3>List a property</h3>
+        </div>
+
+        <div class="inputs">
+            <input placeholder="Name of the property" class="input" type="text" name="name" required>
+            <br>
+            <input placeholder="Description" class="input" type="text" name="description" required>
+            <br>
+            <input placeholder="Cost per night" class="input" type="number" name="cost_per_night" required>
+            <br>
+            <input class="submitImage" type="file" name="image_data" accept="image/*" required>
+            <br>
+            <input class="submit" type="submit" value="List my property">
+        </div>
+    </div>
+</form>
+
 {% endblock %}

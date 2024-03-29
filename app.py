@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, redirect, session, url_for, jsonify
+from flask import Flask, request, render_template, redirect, session, url_for, jsonify, Response
 from lib.database_connection import get_flask_database_connection
 from lib.user_repository import UserRepository
 from lib.user import User
@@ -10,13 +10,19 @@ from lib.property_parameters_validator import PropertyParametersValidator
 from lib.comms import EmailManager
 from lib.booking_repository import BookingRepository
 from lib.booking import Booking
+from werkzeug.utils import secure_filename
+import base64
+from PIL import Image
 
 # Create a new Flask app
 app = Flask(__name__)
 
 # Secret key for session management
-app.secret_key = 'teamvenerarulestheworld!@£$%'
+app.secret_key = app_secret_key = os.environ.get('APP_SECRET_KEY')
 
+with app.app_context():
+    connection = get_flask_database_connection(app)
+    connection.initial_seed_properties()
 
 # == Your Routes Here ==
 
@@ -37,10 +43,25 @@ def get_property_list():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
+    property_data = []
+    for prop in properties:
+        prop_dict = prop.__dict__
+        prop_dict['image_data'] = base64.urlsafe_b64encode(prop.image_data).decode('utf-8')
+        property_data.append(prop_dict)
+
     if 'username' in session:
         username = session['username']
-        return render_template('property_list.html', username = username, properties = properties)
-    return render_template('property_list.html', properties = properties)
+        return render_template('property_list.html', username=username, properties=property_data)
+    return render_template('property_list.html', properties=property_data)
+
+@app.route('/serve_image/<int:image_id>', methods=['GET'])
+def serve_image(image_id):
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    property = repository.find(image_id)
+    if property:
+        return Response(property.image_data, mimetype='image/png')
+    return 'Image not found', 404
 
 # GET /property
 # Returns the property with the supplied name as HTML
@@ -51,23 +72,18 @@ def get_property(id):
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = repository.find(id)
+    prop_dict = property.__dict__
+    prop_dict['image_data'] = base64.urlsafe_b64encode(property.image_data).decode('utf-8')
     if 'username' in session:
         username = session['username']
-        return render_template('property_id.html', username = username, property = property)
-    # We use `render_template` to send the user the file `property_id.html`
-    return render_template('property_id.html', property=property)
+        return render_template('property_id.html', username=username, property=prop_dict)
+    return render_template('property_id.html', property=prop_dict)
 
 # BOOK PROPERTY ROUTES
 # BOOK /PROPERTY_{ID}
 @app.route('/property_request_sent', methods=['GET'])
 def get_property_request_success():
     return render_template('property_request_sent.html')
-
-from flask import request, redirect, render_template, session
-from lib.booking import Booking
-from lib.booking_repository import BookingRepository
-from lib.property_repository import PropertyRepository
-from lib.user_repository import UserRepository
 
 @app.route('/make_booking', methods=['POST'])
 def book_property():
@@ -162,7 +178,12 @@ def post_create_property():
         username = session['username']
         user_repository = UserRepository(connection)
         user = user_repository.find(username)
-        property = Property(0, name, description, cost_per_night, user.id)
+        image_file = request.files['image_data']
+        
+        image_data = image_file.read()
+
+        # Create Property object
+        property = Property(0, name, description, cost_per_night, image_data, user.id)
         validator = PropertyParametersValidator(name, description, cost_per_night)
         if not validator.is_valid():
             return render_template('create_property.html', errors=validator.generate_errors()), 400
@@ -230,72 +251,22 @@ def logout():
     return redirect(url_for('get_index'))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # get page user details
 @app.route('/user_<username>', methods=['GET'])
 def get_user_details(username):
     connection = get_flask_database_connection(app)
     user_repo = UserRepository(connection)
     properties = user_repo.find_properties_by_username(username)
+    property_data = []
+    for prop in properties:
+        prop_dict = prop.__dict__
+        prop_dict['image_data'] = base64.urlsafe_b64encode(prop.image_data).decode('utf-8')
+        property_data.append(prop_dict)
+
     if 'username' in session:
         username = session['username']
-        return render_template('user_profile.html', username = username, properties = properties)
+        return render_template('user_profile.html', username = username, properties = property_data)
     return render_template('user_profile.html', username = username)
-
 
 # GET /property
 # Returns the property with the supplied name as HTML
@@ -321,4 +292,4 @@ def get_user_details(username):
 # They also start the server configured to use the test database
 # if started in test mode.
 if __name__ == '__main__':
-    app.run(debug=True, port=int(os.environ.get('PORT', 5000)))
+    app.run(debug=False, port=int(os.environ.get('PORT', 5000)))

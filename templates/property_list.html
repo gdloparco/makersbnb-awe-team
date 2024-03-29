@@ -6,23 +6,23 @@
 {% endblock %}
 
 {% block content %}
-    <div class="menu properties-background">
-        <div class="welcome">
-            <h3>See our fabulous properties below!</h3>
-        </div>
-
-        {% for property in properties %}
-        <div class="property">
-                <img class="property-image" src="/static/img/{{property.name}}.png" alt="castle">
-            <div class="property-description">
-                <p>{{property.name}}</p>
-                <br>
-                <p>Description: {{property.description}}</p> 
-                <br>
-                <p>Cost per night: £{{property.cost_per_night}}</p>
-            </div>
-            <a href="/property_{{property.id}}" class="submit">Book</a>
-        </div>
-        {% endfor %}
+<div class="menu properties-background">
+    <div class="welcome">
+        <h3>See our fabulous properties below!</h3>
     </div>
+
+    {% for property in properties %}
+    <div class="property">
+        <img class="property-image" src="{{ url_for('serve_image', image_id=property.id) }}" alt="{{property.name}}">
+        <div class="property-description">
+            <p>{{property.name}}</p>
+            <br>
+            <p>Description: {{property.description}}</p>
+            <br>
+            <p>Cost per night: £{{property.cost_per_night}}</p>
+        </div>
+        <a href="/property_{{property.id}}" class="submit">Book</a>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

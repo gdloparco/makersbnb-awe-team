@@ -11,12 +11,12 @@
         <h3>You are looking at {{property.name}} booking details.</h3>
     </div>
     <div class="book-property">
-        <img src="/static/img/{{property.name}}.png" alt="castle">
+        <img class="property-image" src="{{ url_for('serve_image', image_id=property.id) }}" alt="{{property.name}}">
         <div class="property-description">
             <div class="property-details-container">
                 <p>{{property.name}}</p>
                 <br>
-                <p>Description: {{property.description}}</p> 
+                <p>Description: {{property.description}}</p>
                 <br>
                 <p>Cost per night: £{{property.cost_per_night}}</p>
             </div>
@@ -26,8 +26,9 @@
                 <div class="dates-booking-container">
                     <p>Check in date: </p>
                     <input placeholder="Check-in Date" class="input" type="date" name="start_day">
-                    <br><p>Check out date: </p>
-                    <input placeholder="Check-out Date" class="input" type="date" name="end_day">    
+                    <br>
+                    <p>Check out date: </p>
+                    <input placeholder="Check-out Date" class="input" type="date" name="end_day">
                 </div>
                 <button type="submit" class="make-booking-button">Book this property</button>
             </form>
@@ -35,6 +36,6 @@
     </div>
 
     <a href="/property_list" class="submit back-to-prop">Back to all property listings</a>
-    
+
 </div>
 {% endblock %}

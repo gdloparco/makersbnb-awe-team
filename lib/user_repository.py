@@ -52,12 +52,12 @@ class UserRepository:
 # What do you guys think?
     def find_properties_by_username(self, username):
         rows = self._connection.execute(
-    "SELECT users.id AS user_id, users.username, users.email, users.password, users.phone, properties.id AS property_id, properties.name, properties.description, properties.cost_per_night "
+    "SELECT users.id AS user_id, users.username, users.email, users.password, users.phone, properties.id AS property_id, properties.name, properties.description, properties.cost_per_night, properties.image_data "
     "FROM users JOIN properties ON users.id = properties.user_id "
     "WHERE users.username = %s", [username])
         properties = []
         for row in rows:
-            property = Property(row["property_id"], row["name"], row["description"], row["cost_per_night"],row["user_id"] )
+            property = Property(row["property_id"], row["name"], row["description"], row["cost_per_night"],row ["image_data"], row["user_id"] )
             properties.append(property)
         # Each row has the same id, username, and email, , and email, , so we just use the first
         return properties

@@ -9,10 +9,6 @@ from psycopg.rows import dict_row
 # If the below seems too complex right now, that's OK.
 # That's why we have provided it!
 class DatabaseConnection:
-    # VVV CHANGE BOTH OF THESE VVV
-    DEV_DATABASE_NAME = "DEFAULT_MAKERSBNB_PROJECT"
-    TEST_DATABASE_NAME = "DEFAULT_MAKERSBNB_PROJECT_TEST"
-
     def __init__(self, test_mode=False):
         self.test_mode = test_mode
 
@@ -20,12 +16,28 @@ class DatabaseConnection:
     # to localhost and select the database name given in argument.
     def connect(self):
         try:
+            # Retrieve database connection details from environment variables
+            host = os.environ.get("DB_HOST")
+            database = os.environ.get("DB_NAME")
+            user = os.environ.get("DB_USER")
+            password = os.environ.get("DB_PASSWORD")
+
+            # Check if any of the required environment variables are missing
+            if None in (host, database, user, password):
+                raise Exception("One or more environment variables are not set.")
+
+            # Establish the database connection
             self.connection = psycopg.connect(
-                f"postgresql://localhost/{self._database_name()}",
-                row_factory=dict_row)
-        except psycopg.OperationalError:
-            raise Exception(f"Couldn't connect to the database {self._database_name()}! " \
-                    f"Did you create it using `createdb {self._database_name()}`?")
+                dbname=database,
+                host=host,
+                port="5432",
+                user=user,
+                password=password,
+                row_factory=dict_row
+            )
+
+        except psycopg.OperationalError as e:
+            raise Exception(f"Couldn't connect to the database! Error: {e}")
 
     # This method seeds the database with the given SQL file.
     # We use it to set up our database ready for our tests or application.
@@ -60,13 +72,43 @@ class DatabaseConnection:
     def _check_connection(self):
         if self.connection is None:
             raise Exception(self.CONNECTION_MESSAGE)
+        
+    def initial_seed_properties(self):
+        cursor = self.connection.cursor()
+        # Check if the properties table is empty
+        cursor.execute("SELECT COUNT(*) FROM properties")
+        result = cursor.fetchone()
+        num_properties = result['count']
 
-    # This private method returns the name of the database we should use.
-    def _database_name(self):
-        if self.test_mode:
-            return self.TEST_DATABASE_NAME
-        else:
-            return self.DEV_DATABASE_NAME
+        # If the properties table is empty, seed the properties
+        if num_properties == 0:
+            images_dir = os.path.join(os.getcwd(), "static/img")
+            # List of property data
+            property_data = [
+                ("London", "Castle", 200, 2),
+                ("Paris", "Chateau", 150, 2),
+                ("Astana", "Yurt", 450, 1),
+                ("Jupiter", "Space station", 1000, 4)
+            ]
+            # Iterate over property data
+            for property_values in property_data:
+                property_name, property_description, property_cost, user_id = property_values
+                
+                # Construct the full path to the image file
+                filename = property_name + ".png"
+                image_path = os.path.join(images_dir, filename)
+                
+                # Open the image file and read its content
+                with open(image_path, "rb") as file:
+                    image_data = file.read()
+                    
+                    # Execute the insertion query
+                    cursor.execute("INSERT INTO properties (name, description, cost_per_night, image_data, user_id) VALUES (%s, %s, %s, %s, %s)",
+                                    (property_name, property_description, property_cost, psycopg.Binary(image_data), user_id))
+            # Commit the transaction
+            self.connection.commit()
+            print('Database seeded successfully!')
+
 
 # This function integrates with Flask to create one database connection that
 # Flask request can use. To see how to use it, look at example_routes.py

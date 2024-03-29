@@ -12,26 +12,27 @@
         <h3>My account - Welcome {{ username }}</h3>
 
         {% if errors %}
-            <p class="errors">
-                There were errors with your submission: {{errors}}
-            </p>
+        <p class="errors">
+            There were errors with your submission: {{errors}}
+        </p>
         {% endif %}
 
         {% if properties %}
-            {% for property in properties %}
-                <div class="property">
-                        <img class="property-image" src="/static/img/{{property.name}}.png" alt="{{ property.name }}">
-                    <div class="property-description">
-                        {{property.name}}
-                        <br>
-                        Description: {{property.description}}
-                        <br>
-                        Cost per night: {{property.cost_per_night}}
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}  
-            <p>No properties listed.</p>
+        {% for property in properties %}
+        <div class="property">
+            <img class="property-image" src="{{ url_for('serve_image', image_id=property.id) }}"
+                alt="{{ property.name }}">
+            <div class="property-description">
+                {{property.name}}
+                <br>
+                Description: {{property.description}}
+                <br>
+                Cost per night: {{property.cost_per_night}}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No properties listed.</p>
         {% endif %}
 
         <h4>Update my details</h4>
