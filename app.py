@@ -37,6 +37,13 @@ def get_index():
         return render_template('index.html', username = username)
     return render_template('index.html')
 
+@app.route('/', methods=['GET'])
+def get_index():
+    if 'username' in session:
+        username = session['username']
+        return render_template('index.html', username = username)
+    return render_template('index.html')
+
 # GET PROPERTY ROUTES
 @app.route('/property_list', methods=['GET'])
 def get_property_list():
@@ -292,4 +299,4 @@ def get_user_details(username):
 # They also start the server configured to use the test database
 # if started in test mode.
 if __name__ == '__main__':
-    app.run(debug=False, port=int(os.environ.get('PORT', 5000)))
+    app.run(debug=True, port=int(os.environ.get('PORT', 5000)))
